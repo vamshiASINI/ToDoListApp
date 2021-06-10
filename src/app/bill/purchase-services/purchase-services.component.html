@@ -1,0 +1,64 @@
+<div style="padding: 8pt;">
+    <app-bill-plan-show (planTrial)=planTrialPurchase($event) (planSetSelected)=planSetSelectedForPurchase($event)></app-bill-plan-show>
+    <div *ngIf="planSetValueIs">
+        <br>
+        <mat-divider> </mat-divider>
+        <br>
+        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8pt">
+            <div>
+                <h3>License Address</h3>
+                <!--<app-bill-address-institution [billAddressInstitution]=billAddressInstitution (selectedAddress)="selectedLicenseAddress($event)"></app-bill-address-institution>-->
+
+                <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8pt">
+                    <mat-card *ngFor="let item of addressInstitutionLicense; let i=index" (click)="onClickSelectAddressLic(i)" [ngClass]="{'boxBackGround': item.selected}">
+                        <mat-card-header>
+                            <mat-card-title>{{item.name}}</mat-card-title>
+                            <!--<mat-card-subtitle>{{item.institution}}</mat-card-subtitle>-->
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>{{item.address1}}</p>
+                            <p>{{item.address2}}</p>
+                            <p>{{item.city}}</p>
+                            <p>{{item.pincode}}</p>
+                            <p>{{item.state}}</p>
+                            <p>{{item.country}}</p>
+
+                        </mat-card-content>
+
+                    </mat-card>
+                </div>
+
+
+            </div>
+            <div>
+                <h3>Billing Address</h3>
+                <!--<app-bill-address-institution [billAddressInstitution]=billAddressInstitution (selectedAddress)="selectedBillingAddress($event)"></app-bill-address-institution>-->
+                <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8pt">
+                    <mat-card *ngFor="let item of addressInstitutionBilling; let i=index" (click)="onClickSelectAddressBill(i)" [ngClass]="{'boxBackGround': item.selected}">
+                        <mat-card-header>
+                            <mat-card-title>{{item.name}}</mat-card-title>
+                            <!--<mat-card-subtitle>{{item.institution}}</mat-card-subtitle>-->
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>{{item.address1}}</p>
+                            <p>{{item.address2}}</p>
+                            <p>{{item.city}}</p>
+                            <p>{{item.pincode}}</p>
+                            <p>{{item.state}}</p>
+                            <p>{{item.country}}</p>
+
+                        </mat-card-content>
+
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <mat-divider> </mat-divider>
+        <br>
+        <app-bill-plan-show-billing *ngIf="addressInstitutionBillingSelected && addressInstitutionLicenseSelected" [planSetValueIs]=planSetValueIs [addressInstitutionBillingSelected]=addressInstitutionBillingSelected [addressInstitutionLicenseSelected]=addressInstitutionLicenseSelected></app-bill-plan-show-billing>
+
+    </div>
+
+</div>

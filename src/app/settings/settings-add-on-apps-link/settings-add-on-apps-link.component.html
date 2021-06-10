@@ -1,0 +1,20 @@
+<div style="padding: 8pt;">
+    <h2>Add-on Apps</h2>
+    <button mat-raised-button color="primary" (click)="onClickAdd()">Add</button>
+    <br><br>
+    <mat-accordion>
+        <mat-expansion-panel hideToggle *ngFor="let item of settingsAddOnAppsLinkList; let i=index">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{item.application_name}}
+                </mat-panel-title>
+
+            </mat-expansion-panel-header>
+            {{item.redirect_URL}}
+            <mat-action-row>
+                <button mat-button color="primary" (click)="onClickOnEdit(i)">Edit</button>
+                <button mat-button color="warn" (click)="onClickOnDelete(i)">Delete</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

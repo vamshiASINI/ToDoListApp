@@ -1,0 +1,27 @@
+<div class="bill-licenses-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total</th>
+                <th>Assigned</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Zyime – Student License</td>
+                <td>{{billCurrentValidity.licence_student}}</td>
+                <td>{{billCurrentValidity.licence_used_student}}</td>
+                <td>{{ +billCurrentValidity.licence_student - +billCurrentValidity.licence_used_student}}</td>
+            </tr>
+            <tr>
+                <td>Zyime – Employee License</td>
+                <td>{{billCurrentValidity.licence_employee}}</td>
+                <td>{{billCurrentValidity.licence_used_employee}}</td>
+                <td>{{ +billCurrentValidity.licence_employee - +billCurrentValidity.licence_used_employee}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>

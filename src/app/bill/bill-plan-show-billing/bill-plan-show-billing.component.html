@@ -1,0 +1,140 @@
+<div *ngIf="planSetValueIs">
+    <h3> Plan Details & Order Summary </h3>
+    <h3><strong>{{planSetValueIs.plan}} Plan</strong></h3>
+
+    <div>
+        <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="24pt">
+            <form class="needs-validation" autocomplete="off" novalidate [formGroup]="billForm">
+                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="16pt">
+                    <mat-form-field appearance="fill">
+                        <mat-label>How do you want to pay? </mat-label>
+                        <mat-select formControlName="plan" (selectionChange)="onPlanChange($event)">
+                            <mat-option *ngFor="let item of planSetValueIs.price; let i=index" [value]="item.id">{{item.duration}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Number of Student </mat-label>
+                        <input matInput type="number" formControlName="student" (input)="onStudentChange()">
+                        <mat-error *ngIf="student.invalid">{{ getErrorStudent() }}</mat-error>
+                    </mat-form-field>
+
+                    <!--<mat-form-field class="example-full-width">
+                        <mat-label>Number of Employees</mat-label>
+                        <input matInput disabled>
+                        <mat-hint align="start"><strong>(Free Licenses)</strong> </mat-hint>
+                    </mat-form-field>-->
+
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Add-on Employees</mat-label>
+                        <input matInput type="number" formControlName="emp" (input)="onEmpChange($event)">
+                    </mat-form-field>
+
+                    <button type="button" *ngIf="!sendingToServer" mat-raised-button color="primary" (click)="placeMyOrder()">Place My Order</button>
+                    <button type="button" *ngIf="sendingToServer" mat-raised-button color="primary">Placeing My Order ..............wait</button>
+                </div>
+            </form>
+            <div>
+                <table style="min-width: 500pt;">
+                    <thead>
+                        <tr style="background-color: rgb(240, 239, 239);text-align: center;">
+                            <td>Item</td>
+                            <td>Unit Price</td>
+                            <td>No. Of Units</td>
+                            <td>Total</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Student Licenses</td>
+                            <td *ngIf="!currentSelectedPlanPrice.discount">{{currency}}{{currentSelectedPlanPrice.lstudents}}/user/month</td>
+                            <td *ngIf="currentSelectedPlanPrice.discount">
+                                <del> {{currency}}{{currentSelectedPlanPrice.lstudents}}</del> {{currency}}{{currentSelectedPlanPrice.lstudents - (currentSelectedPlanPrice.lstudents*(currentSelectedPlanPrice.discount/100))}}/user/month</td>
+                            <td>{{billForm.get('student').value}}</td>
+                            <!--<td *ngIf="!currentSelectedPlanPrice.discount">{{billForm.get('student').value * (currentSelectedPlanPrice.lstudents) }}</td>
+                            <td>{{billForm.get('student').value * (currentSelectedPlanPrice.lstudents - (currentSelectedPlanPrice.lstudents*(currentSelectedPlanPrice.discount/100))) | number:'1.0-0' }}</td>-->
+                            <td>{{currency}}{{totalStudentbill}}</td>
+                        </tr>
+                        <tr>
+                            <td>Employees Licenses</td>
+                            <td>Free</td>
+                            <td>{{billForm.get('student').value * 0.2 | number:'1.0-0'}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td> Add-on Employees</td>
+                            <td *ngIf="!currentSelectedPlanPrice.discount">{{currency}}{{currentSelectedPlanPrice.lemployees}}/user/month</td>
+                            <td *ngIf="currentSelectedPlanPrice.discount">
+                                <del>{{currency}}{{currentSelectedPlanPrice.lemployees}}</del> {{currency}}{{currentSelectedPlanPrice.lemployees - (currentSelectedPlanPrice.lemployees*(currentSelectedPlanPrice.discount/100))}}/user/month</td>
+                            <td>{{billForm.get('emp').value}}</td>
+                            <!--<td *ngIf="!currentSelectedPlanPrice.discount">{{billForm.get('emp').value * (currentSelectedPlanPrice.lemployees)}}</td>-->
+                            <td> {{currency}}{{totalEmpBill}}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>Sub Total</td>
+                            <td> {{currency}}{{subTotal}}</td>
+                        </tr>
+                        <tr *ngIf="billForm.get('student').value">
+                            <td colspan="2">
+                                <div *ngIf="!couponAdded">
+                                    <mat-form-field style="width: 80%;">
+                                        <mat-label>Have promo code/discount coupon</mat-label>
+                                        <input matInput type="text" [(ngModel)]="coupon">
+                                    </mat-form-field>
+                                    <button mat-stroked-button color="primary" (click)="checkCoupon()">Apply</button>
+                                </div>
+                                <div *ngIf="couponAdded">
+                                    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8pt">
+
+
+                                        <h2><strong>{{coupon}}</strong></h2>
+                                        <!--<button mat-stroked-button color="primary" (click)="checkCouponRemove()">Remove</button>-->
+
+                                        <button mat-fab color="warn" (click)="checkCouponRemove()" aria-label="Remove">
+                                            <mat-icon>clear</mat-icon>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </td>
+                            <td>Discount</td>
+                            <td>{{currency}}{{billAmountWithCoupon| number:'1.0-0'}}</td>
+                        </tr>
+                        <tr *ngIf="billForm.get('student').value">
+                            <td colspan="2"></td>
+                            <td>Total</td>
+                            <td>{{currency}}{{total| number:'1.0-0'}}</td>
+                        </tr>
+                        <tr *ngIf="taxAplicabe && !taxAplicabeGst">
+                            <td colspan="2"></td>
+                            <td>IGST(18%)</td>
+                            <td>{{currency}}{{taxTotal| number:'1.0-0'}}</td>
+                        </tr>
+                        <tr *ngIf="taxAplicabe && taxAplicabeGst ">
+                            <td colspan="2"></td>
+                            <td>SGST(9%)</td>
+                            <td>{{currency}}{{taxTotal/2| number:'1.0-0'}}</td>
+                        </tr>
+                        <tr *ngIf="taxAplicabe && taxAplicabeGst ">
+                            <td colspan="2"></td>
+                            <td>CGST(9%)</td>
+                            <td>{{currency}}{{taxTotal/2| number:'1.0-0'}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>G. Total</td>
+                            <td>{{currency}}{{grossTotal| number:'1.0-0'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

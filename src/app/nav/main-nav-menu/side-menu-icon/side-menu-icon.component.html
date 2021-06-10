@@ -1,0 +1,13 @@
+<button mat-button (click)="menuClickStatusFun($event)">
+        <mat-icon class="icon-gap">person</mat-icon> 
+        {{menuText}}
+        <div class="sub-icon">
+            <mat-icon class="side-menu-icon" *ngIf="iconStatus">
+                keyboard_arrow_up
+            </mat-icon>
+        
+            <mat-icon class="side-menu-icon" *ngIf="!iconStatus">
+                keyboard_arrow_down
+            </mat-icon>
+        </div>
+</button>

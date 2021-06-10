@@ -1,0 +1,74 @@
+.example-spacer {
+    flex: 1 1 auto;
+   
+  }
+
+
+
+  /* If screen size is more than 600px wide, set the font-size of <div> to 80px */
+@media screen and (min-width: 600px) {
+  .example-container {
+    width: 100%;
+    height: calc(100% - (64px*2));
+
+  }
+}
+
+/* If screen size is 600px wide, or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 600px) {
+  .example-container {
+    width: 100%;
+    height: calc(100% - (56px*2));
+
+  }
+}
+
+
+  .example-sidenav-content {
+     padding: 8pt;
+  }
+
+  .example-sidenav {
+    padding: 20px;
+  }
+
+  .schoolName{
+     .brandName{
+      font-weight: bolder;
+      line-height: 1;
+      /* font-family: none; */
+      /* letter-spacing: 5px; */
+      margin: 5pt 0 0 0;
+     }
+    .school{
+      font-weight: bolder;
+    line-height: 1;
+    // font-family: none;
+    letter-spacing: 5px;
+    }
+    .person{
+      font-weight: normal;
+      line-height: 0;
+      font-size: larger;
+    }
+  }
+
+
+
+ .matDividerMenu{
+   padding-bottom: 16pt;
+ }
+
+ @media(max-width:600px){
+  .mainstyle{
+    .flex {
+      .content{
+        padding: 0;
+        margin: 0;
+      }
+      .side-nav {
+        display: none;
+    }
+  }
+  } 
+}

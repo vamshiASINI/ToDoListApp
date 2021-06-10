@@ -1,0 +1,96 @@
+<mat-card>
+    <form class="form-container" #form="ngForm">
+        <h2>Add Discusssion Group</h2>
+        <mat-divider></mat-divider>
+        <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="padding: 20px 0;">
+            <ng-conatiner fxFlex="0 1 calc(50% - 32px)" *ngFor="let field of discussionGroupFields">
+                <ng-container [ngSwitch]="field.type">
+                    <ng-container *ngSwitchCase="'select'">
+                        <mat-form-field class="full-input margin-top">
+                            <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                            <mat-select [(ngModel)]="formData[field.name]" [name]="field.name"
+                                [disabled]="field.readonly" [required]="!field.optional">
+                                <mat-option value="">Select</mat-option>
+                                <mat-option *ngFor="let data of field.dataSource" [value]="data.value">{{data.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'boolean'" class="full-input margin-top">
+                        <label style="margin-right: 20px;">{{field.text || field.name | camelize}} <span
+                                *ngIf="!field.optional">*</span></label>
+                        <mat-radio-group [(ngModel)]="formData[field.name]" [name]="field.name"
+                            [disabled]="field.readonly" [required]="!field.optional">
+                            <mat-radio-button style="padding: 10px;" [value]="true">Yes</mat-radio-button>
+                            <mat-radio-button [value]="false">No</mat-radio-button>
+                        </mat-radio-group>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'textarea'" class="full-input">
+                        <mat-form-field appearance="standard" class="full-input">
+                            <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                            <textarea matInput [placeholder]="field.text || field.name | camelize"
+                                [(ngModel)]="formData[field.name]" [name]="field.name" [disabled]="field.readonly"
+                                [required]="!field.optional"></textarea>
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'date'" class="full-input">
+                        <mat-form-field appearance="standard" class="full-input">
+                            <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                            <input matInput [matDatepicker]="picker" [placeholder]="field.text || field.name | camelize"
+                                autocomplete="new-password" autocomplete="off" [(ngModel)]="formData[field.name]"
+                                [name]="field.name" [disabled]="field.readonly" [required]="!field.optional"
+                                [min]="field.dateValidation ? field.dateValidation.minDate : ''"
+                                [max]="field.dateValidation ? field.dateValidation.maxDate : ''"
+                                (click)="picker.open()">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker [calendarHeaderComponent]="exampleHeader"></mat-datepicker>
+                        </mat-form-field>
+                    </ng-container>
+                    <!-- <ng-container *ngSwitchCase="'chip'" class="full-input">
+                    <mat-form-field class="example-chip-list full-input">
+                        <mat-chip-list #chipList [aria-label]="field.text || field.name | camelize">
+                            <mat-chip *ngFor="let chip of chipModel[field.name]" [selectable]="selectable"
+                                [removable]="removable" (removed)="removeChip(chip, field.name)">
+                                {{chip.name}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input [placeholder]="field.text || field.name | camelize"
+                                [ngModel]="autoCompleteModel[field.name]" [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList" [name]="field.name" (keyup)="search($event, field)"
+                                (focus)="getChipList(field)">
+                            <mat-spinner diameter='19' mode='indeterminate' style="position: absolute;"
+                                [ngStyle]="{'right': field.isAddAllow ? '45px' : '27px'}"
+                                *ngIf="isAutoCompleteLoading[field.name]" matSuffix>
+                            </mat-spinner>
+                            <mat-icon matSuffix *ngIf="field.isAddAllow" (click)="autoCompleteAdd($event,field)"
+                                style="cursor: pointer;">add
+                            </mat-icon>
+                        </mat-chip-list>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, field.name)">
+                            <mat-option disabled *ngIf="!filteredOptions.length && !isAutoCompleteLoading[field.name]">
+                                No data found</mat-option>
+                            <mat-option *ngFor="let chip of filteredOptions" [value]="chip.id">
+                                {{chip.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </ng-container> -->
+                    <ng-container *ngSwitchDefault>
+                        <mat-form-field appearance="standard" class="full-input">
+                            <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                            <input [type]="field.type" matInput [placeholder]="field.text || field.name | camelize"
+                                autocomplete="new-password" autocomplete="off" [(ngModel)]="formData[field.name]"
+                                [name]="field.name" [disabled]="field.readonly" [required]="!field.optional">
+                        </mat-form-field>
+                    </ng-container>
+                </ng-container>
+            </ng-conatiner>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="button-panel">
+            <button class="button" mat-raised-button color="primary" type="submit"
+                (click)="submitForm()">Submit</button>
+            <button type="button" class="button" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+        </div>
+    </form>
+</mat-card>

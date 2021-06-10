@@ -1,0 +1,83 @@
+<div class="title-bar">
+    <div class="title">
+        <h2>Subjects</h2>
+    </div>
+</div>
+<mat-card>
+    <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+        <div fxFlex="0 1 calc(33.33% - 32px)" *ngFor="let field of filterField">
+            <ng-container *ngIf="!field.type">
+                <mat-form-field class="full-input margin-top">
+                    <mat-label>{{field.name}}</mat-label>
+                    <input type="text" matInput [(ngModel)]="autoCompleteModel[field.name]"
+                        (keyup)="search($event, field)" (focus)="onAutoCompleteChange(field)" [matAutocomplete]="auto"
+                        [name]="field.name" [readOnly]="field.readonly" [required]="!field.optional"
+                        placeholder="start typing for search">
+                    <mat-icon *ngIf="autoCompleteModel[field.name] && autoCompleteModel[field.name] !==''"
+                        (click)="autoCompleteModel[field.name]=''; this[field.data]=null; filterChange()"
+                        style="font-size: 18px; color: #999; cursor: pointer;" matSuffix>cancel</mat-icon>
+                    <mat-spinner diameter='19' mode='indeterminate' style="position: absolute;"
+                        [ngStyle]="{'right': field.isAddAllow ? autoCompleteModel[field.name] !=='' ? '63px' : '45px' : autoCompleteModel[field.name] !=='' ? '45px': '27px'}"
+                        *ngIf="isAutoCompleteLoading[field.name]" matSuffix>
+                    </mat-spinner>
+                    <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+                </mat-form-field>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="autoCompleteSelect(field, $event)">
+                    <mat-option disabled *ngIf="!filteredOptions.length && !isAutoCompleteLoading[field.name]">No Result
+                        Found</mat-option>
+                    <mat-option *ngFor="let option of filteredOptions" [value]="option.name" [id]="option">
+                        {{option.name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </ng-container>
+            <ng-container *ngIf="field.type">
+                <mat-form-field class="full-input margin-top">
+                    <mat-label>{{field.name | camelize}}</mat-label>
+                    <mat-select [(ngModel)]="academicTerm" (selectionChange)="filterChange()" [name]="field.name"
+                        [disabled]="field.readonly" [required]="!field.optional">
+                        <mat-option value="">{{course ? 'Select' : 'Choose Course First'}}</mat-option>
+                        <mat-option *ngFor="let data of field.dataSource" [value]="data">{{data.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </ng-container>
+        </div>
+        <!-- <div fxFlex="0 1 calc(50% - 32px)">
+            <mat-form-field class="full-input margin-top">
+                <mat-label>Course</mat-label>
+                <mat-select [(ngModel)]="course" name="course" (selectionChange)="filterChange()">
+                    <mat-option value="">Select</mat-option>
+                    <mat-option *ngFor="let course of courses" [value]="course.id">{{course.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div> -->
+    </div>
+    <!-- <mat-tab-group mat-stretch-tabs class="example-stretched-tabs" *ngIf="!isTableShown">
+        <mat-tab label="Subjects">
+            <base-table [(tableSettings)]="subjectData" [actionColumnAllowed]="true" [titleHide]="true"></base-table>
+        </mat-tab>
+        <mat-tab label="Subject Groups">
+            <base-table [(tableSettings)]="subjectGroup" [actionColumnAllowed]="true" [titleHide]="true"></base-table>
+        </mat-tab>
+        <mat-tab label="Elective Groups">
+            <base-table [(tableSettings)]="subjectElectiveGroup" [actionColumnAllowed]="true" [titleHide]="true">
+            </base-table>
+        </mat-tab>
+    </mat-tab-group> -->
+    <mat-tab-group mat-stretch-tabs class="example-stretched-tabs" *ngIf="isTableShown">
+        <mat-tab label="Subjects">
+            <base-table [(tableSettings)]="subjectData" [actionColumnAllowed]="true" [titleHide]="true"
+                [preFilter]="preFilter"></base-table>
+        </mat-tab>
+        <mat-tab label="Subject Groups">
+            <base-table [(tableSettings)]="subjectGroup" [actionColumnAllowed]="true" [titleHide]="true"
+                [preFilter]="preFilter"></base-table>
+        </mat-tab>
+        <mat-tab label="Elective Groups">
+            <base-table [(tableSettings)]="subjectElectiveGroup" [actionColumnAllowed]="true" [titleHide]="true"
+                [preFilter]="preFilter">
+            </base-table>
+        </mat-tab>
+    </mat-tab-group>
+</mat-card>

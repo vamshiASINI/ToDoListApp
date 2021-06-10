@@ -1,0 +1,246 @@
+<!-- <div class="title-bar">
+    <div class="title">
+        <h2>{{batchLablePlural}}</h2>
+    </div>
+    <div class="add" *ngIf="!isEditMode">
+        <div class="add" *ngIf="!isAddMode && !isEditMode"></div>
+        <button mat-fab color="primary" matTooltip="Add New" (click)="add()" [routerLink]="['/academic/batch-section/add']" routerLinkActive="router-link-active">
+        <button mat-fab color="primary" matTooltip="Add New" (click)="add()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div> -->
+<!-- <base-table [(tableSettings)]="batchData" [actionColumnAllowed]="true"></base-table> -->
+<div class="title-bar">
+    <div class="title">
+        <h2>BATCH</h2>
+    </div>
+</div>
+<mat-card>
+    <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+        <div fxFlex="0 1 calc(25% - 32px)" *ngFor="let field of filterField">
+            <ng-container *ngIf="!field.type">
+                <mat-form-field class="full-input margin-top">
+                    <mat-label>{{field.name}}</mat-label>
+                    <input type="text" matInput [(ngModel)]="autoCompleteModel[field.name]"
+                        (keyup)="search($event, field)" (focus)="onAutoCompleteChange(field)" [matAutocomplete]="auto"
+                        [name]="field.name" [readOnly]="field.readonly" [required]="!field.optional"
+                        placeholder="start typing for search">
+                    <mat-icon *ngIf="autoCompleteModel[field.name] && autoCompleteModel[field.name] !==''"
+                        (click)="autoCompleteModel[field.name]=''; this[field.data]=null; filterChange()"
+                        style="font-size: 18px; color: #999; cursor: pointer;" matSuffix>cancel</mat-icon>
+                    <mat-spinner diameter='19' mode='indeterminate' style="position: absolute;"
+                        [ngStyle]="{'right': field.isAddAllow ? autoCompleteModel[field.name] !=='' ? '63px' : '45px' : autoCompleteModel[field.name] !=='' ? '45px': '27px'}"
+                        *ngIf="isAutoCompleteLoading[field.name]" matSuffix>
+                    </mat-spinner>
+                    <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+                </mat-form-field>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="autoCompleteSelect(field, $event)">
+                    <mat-option disabled *ngIf="!filteredOptions.length && !isAutoCompleteLoading[field.name]">No Result
+                        Found</mat-option>
+                    <ng-container *ngIf="field.key === 'academicSession_id'">
+                        <mat-option *ngFor="let option of filteredOptions"
+                            [style.background-color]=" option.is_active ? 'rgba(0,255,0,0.6)' : 'rgba(255,0,0,0.6)'"
+                            [value]="option.name" [id]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </ng-container>
+                    <ng-container *ngIf="field.key !== 'academicSession_id'">
+                        <mat-option *ngFor="let option of filteredOptions" [value]="option.name" [id]="option">
+                            {{option.name}}
+                        </mat-option>
+                    </ng-container>
+
+                </mat-autocomplete>
+            </ng-container>
+            <ng-container *ngIf="field.type==='select'">
+                <mat-form-field class="full-input margin-top">
+                    <mat-label>{{field.name | camelize}}</mat-label>
+                    <mat-select [(ngModel)]="academicTerm" (selectionChange)="filterChange()" [name]="field.name"
+                        [disabled]="field.readonly" [required]="!field.optional">
+                        <mat-option value="">{{course ? 'Select' : 'Choose Course First'}}</mat-option>
+                        <mat-option *ngFor="let data of field.dataSource" [value]="data">{{data.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </ng-container>
+        </div>
+    </div>
+    <!-- <ng-container *ngIf="!isTableShown">
+        <base-table style="margin-top: -20px;" [(tableSettings)]="batchData" [actionColumnAllowed]="true"
+            [titleHide]="true"></base-table>
+    </ng-container> -->
+    <div class="title-bar">
+        <div class="add" *ngIf="!isAddMode && !isEditMode && isTableShown">
+            <button mat-fab color="primary" matTooltip="Add New" (click)="add()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <ng-container *ngIf="isTableShown">
+        <base-table style="margin-top: -20px;" [(tableSettings)]="batchData" [actionColumnAllowed]="true"
+            [headingHide]="true" [preFilter]="preFilter"></base-table>
+    </ng-container>
+
+    <mat-card *ngIf="isAddMode || isEditMode">
+        <div class="container">
+            <form #mainForm="ngForm">
+                <h2>{{formData?.id ? 'EDIT' : 'ADD'}} {{title | uppercase}}</h2>
+                <mat-divider></mat-divider>
+                <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="padding: 20px 0;">
+                    <ng-conatiner fxFlex="0 1 calc(50% - 32px)" *ngFor="let field of validFields">
+                        <ng-container [ngSwitch]="field.type">
+                            <ng-container *ngSwitchCase="'date'" class="full-input">
+                                <mat-form-field appearance="standard" class="full-input">
+                                    <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                                    <input matInput [matDatepicker]="picker"
+                                        [placeholder]="field.text || field.name | camelize" autocomplete="new-password"
+                                        autocomplete="off" [(ngModel)]="formData[field.name]" [name]="field.name"
+                                        [disabled]="field.readonly" [required]="!field.optional"
+                                        [min]="field.dateValidation ? field.dateValidation.minDate : ''"
+                                        [max]="field.dateValidation ? field.dateValidation.maxDate : ''"
+                                        (click)="picker.open()">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker [calendarHeaderComponent]="exampleHeader">
+                                    </mat-datepicker>
+                                </mat-form-field>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'boolean'" class="full-input margin-top">
+                                <label style="margin-right: 20px;">{{field.text || field.name | camelize}} <span
+                                        *ngIf="!field.optional">*</span></label>
+                                <mat-radio-group [(ngModel)]="formData[field.name]" [name]="field.name"
+                                    [disabled]="field.readonly" [required]="!field.optional">
+                                    <mat-radio-button style="padding: 10px;" [value]="true">Yes</mat-radio-button>
+                                    <mat-radio-button [value]="false">No</mat-radio-button>
+                                </mat-radio-group>
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                <mat-form-field appearance="standard" class="full-input">
+                                    <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                                    <input [type]="field.type" matInput
+                                        [placeholder]="field.text || field.name | camelize" autocomplete="new-password"
+                                        autocomplete="off" [value]="formData[field.name]"
+                                        [(ngModel)]="formData[field.name]" [name]="field.name"
+                                        [disabled]="field.readonly" [required]="!field.optional">
+                                </mat-form-field>
+                            </ng-container>
+                        </ng-container>
+                    </ng-conatiner>
+                </div>
+                <mat-vertical-stepper #stepper>
+                    <mat-step>
+                        <ng-template matStepLabel>{{extraInputFields[0].title}}</ng-template>
+                        <ul>
+                            <li *ngFor="let subject of extraInputFields[0].data">
+                                <mat-checkbox [(ngModel)]="subject.completed" [name]="subject.id" color="primary">
+                                    {{subject.name}}
+                                </mat-checkbox>
+                            </li>
+                        </ul>
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>{{extraInputFields[1].title}}</ng-template>
+                        <ul>
+                            <li *ngFor="let subject of extraInputFields[1].data">
+                                <mat-checkbox [(ngModel)]="subject.completed" [name]="subject.id" color="primary">
+                                    {{subject.name}}
+                                </mat-checkbox>
+                            </li>
+                        </ul>
+                        <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="padding: 20px 0;">
+                            <!-- <div fxFlex="0 1 calc(50% - 32px)">
+                                <mat-form-field appearance="standard" class="full-input">
+                                    <mat-label>Number Of Subject</mat-label>
+                                    <input type="number" matInput placeholder="Number of subject"
+                                        autocomplete="new-password" autocomplete="off"
+                                        [(ngModel)]="extraInputFields[1].formData.number_of_subject"
+                                        name="number_of_subject" required>
+                                </mat-form-field>
+                            </div> -->
+                            <!-- <div fxFlex="0 1 calc(50% - 32px)">
+                                <mat-form-field class="full-input margin-top">
+                                    <mat-label>Score</mat-label>
+                                    <mat-select [(ngModel)]="extraInputFields[1].formData.score_options_id"
+                                        name="score_options_id" required>
+                                        <mat-option value="">Select</mat-option>
+                                        <mat-option *ngFor="let data of scoreOptions" [value]="data.id">{{data.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> -->
+                            <!-- <div fxFlex="0 1 calc(50% - 32px)"
+                                *ngIf="extraInputFields[1].formData.score_options_id===1">
+                                <mat-form-field class="full-input margin-top">
+                                    <mat-label>Marks Calculation Formula</mat-label>
+                                    <mat-select [(ngModel)]="extraInputFields[1].formData.batch_mark_calcutation_id"
+                                        name="batch_mark_calcutation_id" required>
+                                        <mat-option value="">Select</mat-option>
+                                        <mat-option *ngFor="let data of marksOptions" [value]="data.id">{{data.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> -->
+                            <div fxFlex="0 1 calc(50% - 32px)">
+                                <label style="margin-right: 20px;">Last Date To Choose* </label>
+                                <mat-radio-group [(ngModel)]="extraInputFields[1].formData.last_date_to_choose"
+                                    name="last_date_to_choose" required>
+                                    <mat-radio-button style="padding: 10px;" [value]="true">Yes</mat-radio-button>
+                                    <mat-radio-button [value]="false">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div fxFlex="0 1 calc(50% - 32px)" *ngIf="extraInputFields[1].formData.last_date_to_choose">
+                                <mat-form-field appearance="standard" class="full-input">
+                                    <mat-label>Last Date to select Subject</mat-label>
+                                    <input matInput [matDatepicker]="picker" placeholder="Last Date to select Subject"
+                                        autocomplete="new-password" autocomplete="off"
+                                        [(ngModel)]="extraInputFields[1].formData.last_date_select_subject"
+                                        name="last_date_select_subject" required (click)="picker.open()">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker [calendarHeaderComponent]="exampleHeader"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>{{extraInputFields[2].title}}</ng-template>
+                        <ul>
+                            <li *ngFor="let subject of extraInputFields[2].data">
+                                <mat-checkbox [(ngModel)]="subject.completed" [name]="subject.id" color="primary">
+                                    {{subject.name}}
+                                </mat-checkbox>
+                            </li>
+                        </ul>
+                        <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="padding: 20px 0;">
+                            <div fxFlex="0 1 calc(50% - 32px)">
+                                <label style="margin-right: 20px;">Last Date To Choose* </label>
+                                <mat-radio-group [(ngModel)]="extraInputFields[2].formData.last_date_to_choose"
+                                    name="last_date_to_choose1" required>
+                                    <mat-radio-button style="padding: 10px;" [value]="true">Yes</mat-radio-button>
+                                    <mat-radio-button [value]="false">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div fxFlex="0 1 calc(50% - 32px)" *ngIf="extraInputFields[2].formData.last_date_to_choose">
+                                <mat-form-field appearance="standard" class="full-input">
+                                    <mat-label>Last Date to select Subject</mat-label>
+                                    <input matInput [matDatepicker]="picker" placeholder="Last Date to select Subject"
+                                        autocomplete="new-password" autocomplete="off"
+                                        [(ngModel)]="extraInputFields[2].formData.last_date" name="last_date" required
+                                        (click)="picker.open()">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker [calendarHeaderComponent]="exampleHeader"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-step>
+                </mat-vertical-stepper>
+                <mat-divider></mat-divider>
+                <div class="button-panel">
+                    <button class="button" mat-raised-button color="primary" type="submit"
+                        [disabled]="isSubmitInProgress || !mainForm.valid" (click)="submitForm()">Submit</button>
+                    <button type="button" class="button" mat-raised-button color="warn"
+                        (click)="cancel()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </mat-card>
+</mat-card>

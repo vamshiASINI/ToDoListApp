@@ -1,0 +1,128 @@
+<div class="step3  d-none  " #step3div>
+    <form autocomplete="off" novalidate formGroup="billForm">
+        <h2>Order Summary & Billing Information</h2><br>
+
+
+        <div class="form-group row">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Unit Price</th>
+                        <th>No. of Units</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Student Licenses</td>
+                        <td *ngIf="!trial">{{plan?.lstudents}} {{currencySymbol}} X {{plan?.month}} month</td>
+                        <td *ngIf="trial">0 {{currencySymbol}}</td>
+
+                        <td> </td>
+                        <td *ngIf="!trial">{{ plan?.lstudents * 0 * plan?.month}} {{currencySymbol}}</td>
+                        <td *ngIf="trial">0 {{currencySymbol}}</td>
+                    </tr>
+                    <tr *ngIf="!trial">
+                        <td>Employees Licenses</td>
+                        <td>Free</td>
+                        <td>{{0 * .2|number: '1.0-0' }}</td>
+                        <td>0 {{currencySymbol}}</td>
+                    </tr>
+                    <tr>
+                        <td>Add-on Employees</td>
+                        <td *ngIf="!trial">{{plan?.lemployees}} {{currencySymbol}} X {{plan?.month}} month</td>
+                        <td *ngIf="trial">0 {{currencySymbol}}</td>
+                        <td>{{0}}</td>
+                        <td *ngIf="!trial">{{plan?.lemployees * 0 * plan?.month}} {{currencySymbol}}</td>
+                        <td *ngIf="trial">0 {{currencySymbol}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>Sub. Total</td>
+                        <td>0{{currencySymbol}}
+
+
+                        </td>
+                    </tr>
+                    <tr *ngIf="!trial">
+                        <td>Have promo code/ discount coupon</td>
+                        <td>
+                            <div *ngIf="!discountPercentPromo">
+                                <div><input type="text" class="form-control" id="promoStep3" value="" formControlName="promoStep3"></div>
+                                <div> <button [disabled]="checkPoromoCodeChecking" class="btn btn-primary" (click)="checkPoromoCode()">Apply</button></div>
+                            </div>
+                            <div *ngIf="discountPercentPromo">
+                                {{orderSummaryForm.get('promoStep3').value}}
+                                <button class="btn btn-primary" (click)="checkPoromoCodeRemove()">X</button>
+                            </div>
+                        </td>
+                        <td>Discount</td>
+                        <td>{{discountPercentPromo}}%</td>
+                    </tr>
+                    <tr *ngIf="discountPercentPromo">
+                        <td colspan="2">
+
+                        </td>
+                        <td>
+                            After Discount
+                        </td>
+                        <td>
+                            {{ billAfterDiscount |number: '1.0-0'}}{{currencySymbol}}
+                        </td>
+                    </tr>
+                    <tr *ngIf="countryVal == 'IN' ">
+                        <td colspan="2">
+                            <div>
+
+                                <div *ngIf="StateSelect.value == 11">
+                                    <p>CGST 9%</p>
+                                    <p> SGCT 9%</p>
+                                </div>
+                                <div *ngIf="StateSelect.value != 11">
+                                    <p>IGST 18%</p>
+                                </div>
+                            </div>
+
+
+                        </td>
+                        <td>Tax(%)</td>
+                        <td>
+                            <div *ngIf="countryVal == 'IN'">
+                                <div *ngIf="StateSelect.value == 11">
+                                    <p> {{ billAfterTax/2   |number: '1.0-0'}} {{currencySymbol}}</p>
+                                    <p> {{ billAfterTax/2   |number: '1.0-0'}} {{currencySymbol}}</p>
+                                </div>
+
+                                <div *ngIf="StateSelect.value != 11">
+                                    <p> {{ billAfterTax   |number: '1.0-0'}} {{currencySymbol}}</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>G. Total</td>
+                        <td>
+                            <div *ngIf="countryVal == 'IN'">
+                                {{billGrossTotal|number: '1.0-0'}} {{currencySymbol}}
+                            </div>
+                            <div *ngIf="countryVal != 'IN'">
+                                {{billGrossTotal|number: '1.0-0'}} {{currencySymbol}}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="text-align: end;">
+                <button *ngIf="!waitForSubmit" class="btn btn-primary #makepaymentbtn btn-lg" (click)="makePayment()">Make Payment</button>
+                <button *ngIf="waitForSubmit" class="btn btn-primary btn-lg" type="button" disabled>
+                    <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>

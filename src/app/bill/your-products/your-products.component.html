@@ -1,0 +1,14 @@
+<div style="padding: 8pt;">
+    <div *ngIf="watingForserver">
+        <h2>Wait....</h2>
+    </div>
+    <div *ngIf="!watingForserver">
+        <div *ngIf="billCurrentValidity">
+            <h2> Your Current Plan Is <u>{{billCurrentValidity.plan_name}}</u></h2>
+        </div>
+        <div *ngIf="!billCurrentValidity">
+            <h2>No Plan</h2>
+        </div>
+
+    </div>
+</div>

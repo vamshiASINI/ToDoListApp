@@ -1,0 +1,35 @@
+<mat-card>
+    <div fxLayout="row wrap" fxLayoutGap="32px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+        <div fxFlex="0 1 calc(33.33% - 32px)" *ngFor="let field of filterField">
+            <mat-form-field class="full-input margin-top">
+                <mat-label>{{field.name}}</mat-label>
+                <input type="text" matInput [(ngModel)]="autoCompleteModel[field.name]" (keyup)="search($event, field)"
+                    (focus)="onAutoCompleteChange(field)" [matAutocomplete]="auto" [name]="field.name"
+                    [readOnly]="field.readonly" [required]="!field.optional" placeholder="start typing for search">
+                <mat-spinner diameter='19' mode='indeterminate' style="right: 25px; position: absolute;"
+                    *ngIf="isAutoCompleteLoading[field.name]" matSuffix>
+                </mat-spinner>
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="autoCompleteSelect(field, $event)">
+                <mat-option disabled *ngIf="!filteredOptions.length && !isAutoCompleteLoading[field.name]">No Result
+                    Found</mat-option>
+                <mat-option *ngFor="let option of filteredOptions" [value]="option.name" [id]="option.id">
+                    {{option.name}}
+                </mat-option>
+            </mat-autocomplete>
+        </div>
+    </div>
+    <table>
+        <tbody>
+            <tr *ngFor="let day of tableData">
+                <ng-container *ngIf="day.periods.length">
+                    <th>{{day.day}}</th>
+                    <td *ngFor="let period of day.periods">
+                        {{period.time}}<br />{{period.subject}}
+                    </td>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+</mat-card>

@@ -1,0 +1,202 @@
+// @import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "./assets/css/reset.css";
+@import "~@angular/material/theming";
+@import './assets/scss/variable.scss';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// **Be sure that you only ever include this mixin once!**
+@include mat-core();
+
+// Define the default theme (same as the example above).
+$candy-app-primary: mat-palette($mat-indigo);
+$candy-app-accent: mat-palette($mat-pink, A200, A100, A400);
+$candy-app-theme: mat-light-theme(
+  (
+    color: (
+      primary: $candy-app-primary,
+      accent: $candy-app-accent,
+    ),
+  )
+);
+
+// Include the default theme styles (color and default density)
+@include angular-material-theme($candy-app-theme);
+
+// Define an alternate dark theme.
+$dark-primary: mat-palette($mat-brown);
+$dark-accent: mat-palette($mat-yellow, A200, A100, A400);
+$dark-warn: mat-palette($mat-lime);
+$dark-theme: mat-dark-theme(
+  (
+    color: (
+      primary: $dark-primary,
+      accent: $dark-accent,
+      warn: $dark-warn,
+    ),
+  )
+);
+
+// Include the dark color styles inside of a block with a CSS class. You can make this
+// CSS class whatever you want. In this example, any component inside of an element with
+// `.unicorn-dark-theme` will be affected by this alternate dark theme instead of the default theme.
+.unicorn-dark-theme {
+  @include angular-material-color($dark-theme);
+}
+
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: calc(100% - 40px );
+  margin: 0;
+  padding: 15px 10px;
+  font-family: Roboto;
+}
+.app {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  
+  background: $colourPrimary;
+  
+}
+
+.form-full-width {
+  width: 100%;
+}
+
+.posRelative {
+  position: relative;
+  //background-color: blue;
+}
+
+.dateBtn {
+  //background-color: antiquewhite;
+  position: absolute !important;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.mainstyle {
+  // height:100vh ;
+  .flex {
+    display: flex;
+
+    .side-nav {
+      width: 300px;
+
+      padding-bottom: 4rem;
+      overflow-x: hidden;
+      color: whitesmoke;
+      font-weight: normal;
+      font-size: 13pt;
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+
+      line-height: 27px;
+      // cursor: pointer;
+
+      -webkit-font-smoothing: antialiased;
+
+      padding-right: 0rem;
+      // padding-right: 1.25rem;
+      .brand-name {
+        font-size: 20pt;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+        padding: 14pt;
+        font-weight: bold;
+      }
+      .nav-menu-side {
+        mat-list-item {
+          text-align: left;
+          color: whitesmoke;
+        }
+        mat-expansion-panel {
+          background-color: transparent;
+          color: whitesmoke;
+
+        }
+      }
+      mat-divider{
+        padding-bottom: 16pt;
+      }
+    }
+    .content {
+      width: 100%;
+      background-color:#f1f5f8;
+      border-radius: 20pt;
+      padding: 0 16pt;
+      padding-bottom: 60pt;
+      margin-bottom: 30px;
+    }
+  }
+}
+@media(max-width:980px){
+ html,body{
+  padding: 10px 10px;
+  .matDividerMenu{
+    padding-bottom: 8pt;
+  }
+
+ }
+}
+
+
+
+@import './assets/scss/app-main-nav-menu.scss';
+@import './assets/scss/app-login.scss';
+
+.mat-card{
+  padding: 0;
+  border-radius: 0;
+}
+.loginPage{
+  .mainstyle .flex .content {
+    background: none;
+  }
+  .mat-divider{
+  border-top-style: none;
+  }
+  .side-nav{
+    display: none;
+  }
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: rgba(0,255,0, 0.54) !important
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #8ccf8c !important
+}
+
+.icon-size .material-icons {
+  font-size: 20px !important;
+}
+
+.profile-sec {
+  display: flex;
+  align-items: center;
+
+  .material-icons {
+    font-size: 22px !important;
+  }
+}
+
+.mat-slide-toggle-bar {
+  height: 22px !important;
+  width: 44px !important;
+  border-radius: 12px !important
+}
+
+.mat-slide-toggle-thumb-container {
+  top: 1px !important;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+  transform: translate3d(23px, 0, 0) !important;
+}

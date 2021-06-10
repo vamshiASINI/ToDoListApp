@@ -1,0 +1,22 @@
+<div>
+
+    <form autocomplete="off" novalidate [formGroup]="appLinkForm">
+        <mat-form-field class="example-full-width">
+            <mat-label>Application Name</mat-label>
+            <input matInput formControlName="application_name">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <mat-label>Redirect URL</mat-label>
+            <textarea matInput formControlName="redirect_URL"></textarea>
+        </mat-form-field>
+        <div *ngIf="!serverWait">
+            <button *ngIf="!editForm" mat-raised-button color="primary" (click)="onClickAdd()">Add</button>
+            <button *ngIf="editForm" mat-raised-button color="primary" (click)="onClickUpdate()">update</button>
+            <button [mat-dialog-close]="{success: false}" color="warn" mat-button>Close</button>
+        </div>
+        <div *ngIf="serverWait">
+            Please .......Wait
+        </div>
+    </form>
+</div>

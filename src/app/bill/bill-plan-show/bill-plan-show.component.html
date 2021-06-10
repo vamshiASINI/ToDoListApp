@@ -1,0 +1,46 @@
+<div class="bill-plan-show-wrap">
+    <div class="bill-plan-show-col" *ngFor="let item of planAll; let i=index">
+        <div class="bill-plan-show-details" [ngClass]="{'selectedPlan':  item.onboarded}" (click)="onSelectPlanThisNow(i)">
+            <h5>{{item.plan}}</h5>
+            <div class="bill-plan-show-price">
+                <div *ngFor="let itemPlanPrice of item.price; let i=index">
+                    <h3 *ngIf="!itemPlanPrice.discount"><sub>{{currencySymbol}}</sub> {{itemPlanPrice.lstudents}} </h3>
+                    <h3 *ngIf="itemPlanPrice.discount">
+                        <del><sub>{{currencySymbol}}</sub> {{itemPlanPrice.lstudents}}</del>
+                        <sub>{{currencySymbol}}</sub> {{itemPlanPrice.lstudents - (itemPlanPrice.lstudents*(itemPlanPrice.discount/100))}}
+                    </h3>
+                    <p>/student/month, billed {{itemPlanPrice.duration}}</p>
+                </div>
+            </div>
+            <button mat-raised-button color="accent" *ngIf="item.trial && userOnBoard" (click)="startTrial(item)">Try</button>
+                <button mat-raised-button color="primary" (click)="buyThisPlan(item)">Buy</button>
+        </div>
+    </div>
+</div>
+<!-- <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8pt" style="width: 100%">
+    <mat-card *ngFor="let item of planAll; let i=index" [ngClass]="{'selectedPlan':  item.onboarded}" (click)="onSelectPlanThisNow(i)">
+        <mat-card-header>
+            <mat-card-title>{{item.plan}} </mat-card-title>
+            <mat-card-subtitle></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+            <div *ngFor="let itemPlanPrice of item.price; let i=index" style="text-align: center;">
+                <mat-divider> </mat-divider>
+                <br>
+                <p *ngIf="!itemPlanPrice.discount">{{currencySymbol}} {{itemPlanPrice.lstudents}} </p>
+                <p *ngIf="itemPlanPrice.discount">
+                    <del>{{currencySymbol}}{{itemPlanPrice.lstudents}}</del>
+                    {{currencySymbol}}{{itemPlanPrice.lstudents - (itemPlanPrice.lstudents*(itemPlanPrice.discount/100))}}
+                </p>
+                <p>/student/month, billed {{itemPlanPrice.duration}}</p>
+            </div>
+            <mat-divider *ngIf="item.onboarded"> </mat-divider>
+        </mat-card-content>
+        <mat-card-actions *ngIf="item.onboarded">
+
+            <button mat-raised-button color="accent" *ngIf="item.trial && userOnBoard" (click)="startTrial(item)">Try</button>
+            <button mat-raised-button color="primary" (click)="buyThisPlan(item)">Buy</button>
+        </mat-card-actions>
+    </mat-card>
+</div> -->

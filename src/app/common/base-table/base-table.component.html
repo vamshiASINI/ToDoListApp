@@ -1,0 +1,157 @@
+<ng-container *ngIf="!isEditMode">
+    <div class="title-bar" *ngIf="!headingHide">
+        <div class="title" *ngIf="!titleHide">
+            <h2>{{tableSettings?.title | uppercase}}</h2>
+        </div>
+        <div class="add">
+            <button mat-fab color="primary" *ngIf="tableSettings?.extraAddButton"
+                [matTooltip]="'Add New ' + tableSettings?.extraAddButton.title | uppercase"
+                (click)="add(tableSettings.extraAddButton)" style="margin-right: 10px;">
+                <mat-icon>add</mat-icon>
+            </button>
+            <button mat-fab color="primary" [matTooltip]="'Add New ' + tableSettings?.title | uppercase"
+                (click)="add()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="table-container mat-elevation-z8" *ngIf="!isEditMode">
+        <div class="search-panel">
+            <div class="search-field">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Fields</mat-label>
+                    <mat-select placeholder="select fields" name="fields" class="filter-select"
+                        (selectionChange)="dropdwnChange()" [formControl]="selectedFields" multiple>
+                        <mat-option *ngFor="let field of selectionFields" [value]="field">
+                            {{field | camelize}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="search">
+                    <mat-label>Search</mat-label>
+                    <input matInput placeholder="Type search keyword.." name="search" [(ngModel)]="searchTerm" autofocus
+                        (keyup)="filter($event)">
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="icon-field">
+                <mat-icon class="icon" (click)="applyFilter()" matTooltip="Filter" style="cursor: pointer;">filter_alt
+                </mat-icon>
+                <mat-icon class="icon" (click)="fetchData()" matTooltip="Refresh" style="cursor: pointer;">cached
+                </mat-icon>
+            </div>
+        </div>
+        <!-- <table *ngIf="isView" mat-table multiTemplateDataRows matSort (matSortChange)="sortColumn($event)"
+            [dataSource]="dataSource" class="mat-elevation-z8" cdkDropList #table1 #list1="cdkDropList"
+            [cdkDropListData]="dataSource.data" [cdkDropListConnectedTo]="[list2]" (cdkDropListDropped)="drop($event)"
+            id="table1"> -->
+        <table mat-table [dataSource]="dataSource" (matSortChange)="sortColumn($event)" multiTemplateDataRows matSort
+            cdkDropList #table1 #list1="cdkDropList" [cdkDropListData]="dataSource.data"
+            (cdkDropListDropped)="drop($event)" id="table1">
+            <ng-container matColumnDef="expand" *ngIf="isView">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon (click)="element.isExpanded = !element.isExpanded; View(isView, element)"
+                        [matTooltip]="element.isExpanded ? 'Collapse': 'Expand' "
+                        style="cursor: pointer; margin-right: 10px;">
+                        {{element.isExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}</mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="dragnDrop" *ngIf="tableSettings?.dragnDrop">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon matTooltip="Drag to re-order" style="cursor: pointer; margin-right: 10px;">drag_indicator
+                    </mat-icon>
+                </td>
+            </ng-container>
+            <ng-container *ngFor="let field of tableSettings?.fields; let i=index" [matColumnDef]="field.name">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span *ngIf="!field.sortNotAllowed" mat-sort-header>{{field.text || field.name | camelize}}</span>
+                    <span *ngIf="field.sortNotAllowed">{{field.text || field.name | camelize}}</span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container [ngSwitch]="field.type">
+                        <ng-container *ngSwitchCase="'boolean'">
+                            <!-- <mat-icon *ngIf="element[field.name]">done</mat-icon>
+                            <mat-icon *ngIf="!element[field.name]">clear</mat-icon> -->
+                            <mat-slide-toggle
+                                (click)="$event.preventDefault(); toggleActive(field, element[field.name], element)"
+                                [(ngModel)]="element[field.name]">
+                            </mat-slide-toggle>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'date'">
+                            {{element[field.name] | date}}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'number'">
+                            {{element[field.name] | number}}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'select'">
+                            {{element[field.name]}}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'chip'">
+                            <span *ngFor="let chipName of element[field.name]; let i = index">{{chipName.name}}
+                                <span *ngIf="i !== (element[field.name].length - 1)">, </span>
+                            </span>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+
+                            <span>{{element[field.name]}}
+                            </span>
+                        </ng-container>
+                    </ng-container>
+                </td>
+            </ng-container>
+            <ng-container *ngIf="actionColumnAllowed" matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td class="icon-size" mat-cell *matCellDef="let element">
+                    <mat-icon (click)="edit(element)" matTooltip="Edit" style="cursor: pointer;">edit</mat-icon>
+                    <mat-icon (click)="delete(element, tableSettings?.deleteFieldName)" matTooltip="Delete"
+                        style="cursor: pointer;color: #fa3333;">delete
+                    </mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="expandedDetail" *ngIf="isView">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                    <div class="example-element-detail" [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'">
+                        <base-table style="width: 100%;" *ngIf="element.isExpanded"
+                            [(tableSettings)]="viewTableSettings['index'+element.id]" [actionColumnAllowed]="true">
+                        </base-table>
+                    </div>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <ng-container *ngIf="!tableSettings?.dragnDrop">
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="example-element-row"
+                    [class.example-expanded-row]="row.isExpanded && isView"></tr>
+            </ng-container>
+            <ng-container *ngIf="tableSettings?.dragnDrop">
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="example-element-row"
+                    [class.example-expanded-row]="row.isExpanded && isView" cdkDrag></tr>
+            </ng-container>
+            <ng-container *ngIf="isView">
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row">
+                </tr>
+            </ng-container>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="tableSettings?.fields.length+1" style="text-align: center;"
+                    *ngIf="!isDataLoading">No data
+                    found
+                </td>
+            </tr>
+        </table>
+        <mat-spinner class="spinner" diameter="50" *ngIf="isDataLoading"></mat-spinner>
+        <mat-paginator [length]="dataLength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+            (page)="handlePagination($event)" showFirstLastButtons></mat-paginator>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="isEditMode">
+    <mat-card class="form-margin">
+        <base-form [(formData)]="tempFormSettings.formData" [(title)]="tempFormSettings.title"
+            [(fields)]="tempFormSettings.fields" [(resourceUrl)]="tempFormSettings.apiUrl"
+            [(extraFields)]="tempFormSettings.extraInputFields" [preFilter]="preFilter">
+        </base-form>
+    </mat-card>
+</ng-container>

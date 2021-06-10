@@ -1,0 +1,121 @@
+<div style="padding: 8pt;">
+
+    <h2>New {{batchVal}}</h2>
+
+    <form autocomplete="off" novalidate [formGroup]="batchForm">
+
+        <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0;">
+
+            <mat-form-field appearance="legacy">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Name" formControlName="batch_name">
+                <mat-hint>batch name</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <input type="text" placeholder="{{courseGradeVar}}" aria-label="Number" matInput [formControl]="course_grade_class_management_id" [matAutocomplete]="course">
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #course="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <div class="   posRelative">
+                <button mat-button [disableRipple]='true' class="dateBtn" (click)="pickerEnd.open()"> </button>
+                <mat-form-field>
+                    <mat-label>Choose a end date</mat-label>
+                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerEnd" formControlName="end_date">
+                    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerEnd></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field>
+                <input type="text" placeholder="Session" aria-label="Number" matInput [formControl]="academicSession" [matAutocomplete]="program">
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #program="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+
+
+            <mat-form-field class="  ">
+                <input type="text" placeholder="{{programVar}}" aria-label="Number" matInput [formControl]="program_id" [matAutocomplete]="program">
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #program="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+
+            <div class="   posRelative">
+                <button mat-button [disableRipple]='true' class="dateBtn" (click)="pickerStart.open()"> </button>
+
+                <mat-form-field class="form-full-width  " appearance="">
+                    <mat-label>Choose a start date</mat-label>
+                    <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="pickerStart" formControlName="start_date">
+                    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerStart></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="legacy" class="  ">
+                <mat-label>Max number of student</mat-label>
+                <input matInput type="number" placeholder="Placeholder" formControlName="max_number_of_student">
+            </mat-form-field>
+
+
+
+        </div>
+
+        <div cdkDropListGroup>
+            <div class="example-container">
+                <h3>{{normalSubjectListVar}} List</h3>
+
+                <div cdkDropList [cdkDropListData]="todo" class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+                </div>
+            </div>
+
+            <div class="example-container">
+                <h3>Select From Here</h3>
+
+                <div cdkDropList [cdkDropListData]="done" class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </form>
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8pt">
+
+        <button mat-raised-button color="primary" disabled>
+            <mat-icon>edit</mat-icon>{{electiveGroup}}
+        </button>
+
+        <button mat-raised-button color="primary" disabled>
+            <mat-icon>edit</mat-icon>{{subjectGroup}}
+        </button>
+
+    </div>
+
+
+
+
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8pt" class=" form-full-width">
+        <div flex fxFlex="grow"> </div>
+        <!--<button mat-raised-button color="warn"   [routerLink]="['/academic/batch-section']" routerLinkActive="router-link-active">Exit</button>-->
+        <button mat-raised-button color="warn" mat-dialog-close>Exit</button>
+        <button mat-raised-button color="primary">Save</button>
+    </div>
+
+</div>

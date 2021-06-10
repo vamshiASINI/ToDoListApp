@@ -1,0 +1,171 @@
+<div style="padding: 8pt;">
+    <h2>Custom Labels</h2>
+    <form autocomplete="off" novalidate [formGroup]="customLabelsForm">
+        <table>
+            <tr>
+                <th>Master Field Name</th>
+                <th>Singular (Lower Case)</th>
+                <th>Plural (Lower Case)</th>
+            </tr>
+
+            <tr>
+                <th>Program</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="program">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="program_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Course</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="course">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="course_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <th>Batch</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="batch">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="batch_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Normal Subject</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="normal_subject">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="normal_subject_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Elective Subject</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="elective_subject">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="elective_subject_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Elective Group</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="elective_group">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="elective_group_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Subject Group</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="subject_group">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="subject_group_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <th>Module / Chapter</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="module_chapter">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="module_chapter_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <th>Topics / Skills</th>
+                <td>
+                    <div></div>
+                    <mat-form-field>
+                        <mat-label>Lower Case</mat-label>
+                        <input matInput formControlName="topics_skills">
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field>
+                        <mat-label>Lower Case Plural</mat-label>
+                        <input matInput formControlName="topics_skills_plural">
+                    </mat-form-field>
+                </td>
+            </tr>
+
+        </table>
+
+        <div>
+            <br>
+            <button *ngIf="!updatingServer" mat-raised-button color="primary" (click)="onClickUpdatingServer()">Update</button>
+            <button *ngIf="updatingServer" mat-raised-button color="primary">Updateing.........Wait</button>
+
+        </div>
+
+    </form>
+</div>

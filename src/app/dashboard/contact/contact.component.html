@@ -1,0 +1,86 @@
+<div class="title-bar">
+    <div class="title">
+        <h2>Contact Us</h2>
+    </div>
+</div>
+<div class="container">
+    <mat-card>
+        <form #mainForm="ngForm">
+            <mat-accordion class="example-headers-align">
+                <form #contactForm="ngForm">
+                    <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px;">
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>First Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password" autocomplete="off" [(ngModel)]="contact.first_name" name="first_name" required>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Middle Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password" autocomplete="off" [(ngModel)]="contact.middle_name" name="middle_name">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Last Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password" autocomplete="off" [(ngModel)]="contact.last_name" name="last_name" required>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>City</mat-label>
+                                <mat-select [(ngModel)]="contact.city" name="city" required>
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option value="Hyderabad"> Hyderabad</mat-option>
+                                    <mat-option value="Bangalore"> Bangalore</mat-option>
+                                    <mat-option value="Pune"> Pune</mat-option>
+                                    <mat-option value="Delhi"> Delhi</mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Date</mat-label>
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="contact.date" name="date" (click)="picker.open()" autocomplete="new-password" autocomplete="off" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Phone</mat-label>
+                                <input type="number" matInput placeholder="Placeholder" type="number" autocomplete="new-password" autocomplete="off" [(ngModel)]="contact.phone" name="phone" required>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Message</mat-label>
+                                <textarea matInput placeholder="message " [(ngModel)]="contact.message" name="message"></textarea>
+                            </mat-form-field>
+                        </div>
+
+
+
+
+                        <mat-action-row>
+                            <button style="float: right; margin-right: 20px;
+                      margin-top: 10px;" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+                            <button style="float: right; margin-right: 20px;
+                      margin-top: 10px;" mat-raised-button color="primary" [disabled]="!contactForm.valid" (click)="submit()">Submit</button> </mat-action-row>
+                    </div>
+                </form>
+
+
+            </mat-accordion>
+
+        </form>
+    </mat-card>
+
+</div>

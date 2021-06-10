@@ -1,0 +1,91 @@
+<mat-card>
+    <mat-tab-group mat-stretch-tabs class="example-stretched-tabs">
+        <mat-tab label="On Going Discussion Group">
+            <div class="app">
+                <div class="app_body">
+                    <div class="sidebar">
+                        <div class="sidebar_header">
+                            <!-- <Avatar /> -->
+                            <div class="sidebar_headerRight">
+                                <!-- <IconButton>
+                                    <DonutLargeIcon />
+                                </IconButton>
+                                <IconButton>
+                                    <ChatIcon />
+                                </IconButton>
+                                <IconButton>
+                                    <MoreVertIcon />
+                                </IconButton> -->
+
+                            </div>
+                        </div>
+                        <div class="sidebar_search">
+                            <div class="sidebar_searchContainer">
+                                <!-- <SearchIcon /> -->
+                                <input placeholder="search or start new" type="text" />
+                            </div>
+                        </div>
+                        <div class="sidebar_chat">
+                            <div class="sidebarChat" *ngFor="let group of discussionGroups"
+                                (click)="handleGroupChange(group)">
+                                <div class="sidebarChat_info">
+                                    <h4>{{group.groupName}}({{group.type}})</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat">
+                        <div class="chat_header">
+                            <div class="chat_headerInfo">
+                                <h3>{{groupTitle}}({{groupType}})</h3>
+                            </div>
+                            <div class="chat_headerRight">
+                                <mat-icon matTooltip="Attach Files" style="cursor: pointer;">attach_file</mat-icon>
+                                <mat-icon [matMenuTriggerFor]="menu" matTooltip="manage group" style="cursor: pointer;">
+                                    more_vert</mat-icon>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item>
+                                        <span>Group Info</span>
+                                    </button>
+                                    <button mat-menu-item>
+                                        <span>View Members</span>
+                                    </button>
+                                    <button mat-menu-item>
+                                        <span>Manage Admin/ Moderator</span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </div>
+                        <div class="chat_body">
+                            <ng-container *ngIf="chats.length">
+                                <ng-container *ngFor="let chat of chats">
+                                    <p class="chat-message" [ngClass]="chat.isChatReceiver ? 'chat-receiver' : ''">
+                                        <span class="chat-name">{{chat.sentBy}}</span>
+                                        {{chat.message}}
+                                        <span class="chat-time">{{chat.timestamp}}</span>
+                                    </p>
+                                    <span>
+                                        <mat-icon>thumb_up</mat-icon>
+                                    </span>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="!chats.length">
+                                <h4 style="color: #fff; text-align: center;">No chats found.</h4>
+                            </ng-container>
+                        </div>
+                        <div class="chat_footer">
+                            <form>
+                                <input placeholder="Type a message" type="text" />
+                                <button type="submit">Send a message</button>
+                                <mat-icon>send</mat-icon>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="New Discussion Group">
+            <h1>New Discussion Group</h1>
+        </mat-tab>
+    </mat-tab-group>
+</mat-card>

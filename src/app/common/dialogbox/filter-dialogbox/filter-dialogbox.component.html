@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="title">Change Filter Criteria</div>
+    <mat-divider></mat-divider>
+    <div class="body">
+        <ng-container *ngFor="let field of data?.settings?.fields">
+            <ng-container *ngIf="!field.isTableHidden">
+                <mat-checkbox *ngIf="field.type==='boolean'" class="example-margin"
+                    [(ngModel)]="data.settings.formData[field.name]"
+                    [indeterminate]="data.settings.formData[field.name] === undefined"
+                    (click)="$event.preventDefault(); data.settings.formData[field.name] = toggleIntermediate(data.settings.formData[field.name])">
+                    {{field.text || field.name | camelize}}</mat-checkbox>
+                <mat-form-field appearance="standard" class="full-input" *ngIf="field.type==='date'">
+                    <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                    <input matInput [matDatepicker]="picker" [placeholder]="field.text || field.name | camelize"
+                        autocomplete="new-password" autocomplete="off" [(ngModel)]="data.settings.formData[field.name]"
+                        [name]="field.name" (click)="picker.open()"
+                        (dateChange)="changeDateFormat(data.settings.formData[field.name], field.name)">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker [calendarHeaderComponent]="exampleHeader"></mat-datepicker>
+                </mat-form-field>
+                <ng-container *ngIf="field.type==='select'">
+                    <mat-form-field class="full-input margin-top">
+                        <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                        <mat-select [(ngModel)]="dropDownModel[field.name]" [name]="field.name"
+                            (selectionChange)="dropdwnChange(field)" multiple>
+                            <mat-option disabled value="">Select</mat-option>
+                            <mat-option *ngFor="let data of field.dataSource" [value]="data.value">{{data.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+                <ng-container *ngIf="field.type==='autoComplete'">
+                    <mat-form-field class="full-input margin-top">
+                        <mat-label>{{field.text || field.name | camelize}}</mat-label>
+                        <input type="text" matInput [(ngModel)]="autoCompleteModel[field.name]"
+                            (keyup)="search($event, field)" (click)="onAutoCompleteChange()" [matAutocomplete]="auto"
+                            [name]="field.name" placeholder="start typing for search">
+                        <mat-spinner diameter='17' mode='indeterminate' style="position: absolute;
+                            right: 27px;" *ngIf="isAutoCompleteLoading[field.name]" matSuffix>
+                        </mat-spinner>
+                        <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onAutoCompleteChange($event, field)">
+                        <mat-option *ngFor="let option of filteredOptions" [value]="option[field.dataSourceValue]"
+                            [id]="option.id">
+                            {{option[field.dataSourceValue]}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+        <mat-divider style="margin-top: 15px"></mat-divider>
+        <p>Start picking up filter above, below will see what all filters we will apply. You can also click remove icon
+            to remove a filter criteria</p>
+        <ng-container *ngFor="let data of data.settings.formData | keyvalue">
+            <ng-container *ngIf="extractType(data.value)==='boolean'">
+                <div class="button-container">
+                    <label>{{data.key | camelize}}: </label>
+                    <button mat-raised-button class="tab-button">{{data.value}}
+                        <mat-icon (click)="deleteFilter(data.key, 'boolean')">delete</mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="extractType(data.value)==='string'">
+                <div class="button-container">
+                    <label>{{data.key | camelize}}: </label>
+                    <button mat-raised-button class="tab-button">{{data.value | date}}
+                        <mat-icon (click)="deleteFilter(data.key, 'string')">delete</mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="extractType(data.value)==='object' && data.value.length">
+                <div class="button-container">
+                    <label>{{data.key | camelize}}: </label>
+                    <button mat-raised-button class="tab-button"
+                        *ngFor="let value of data.value; let i= index">{{value.value}}
+                        <mat-icon (click)="deleteFilter(data.key, 'object', i, value.fieldType)">delete</mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="footer">
+        <button class="button" mat-raised-button color="primary" type="button" (click)="applyFilter()">Apply</button>
+        <button type="button" class="button" mat-raised-button color="accent" (click)="clearAll()">Clear All</button>
+        <button type="button" class="button" mat-raised-button color="warn" [mat-dialog-close]="false">Close</button>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<!--<mat-toolbar color="">
+
+    
+
+
+    <span *ngIf="darkModeIsOn"><img src="{{env.assetsPath}}img/logo/logo2x.png" height="40pt"></span>
+    <span *ngIf="!darkModeIsOn"><img src="{{env.assetsPath}}img/logo/logoW.png" height="40pt"></span>
+    <span class="example-spacer"></span>
+
+
+    <mat-slide-toggle labelPosition="before" [(ngModel)]="darkModeIsOn" (ngModelChange)="dackModeCheck($event)">
+        <mat-icon>bedtime</mat-icon>
+    </mat-slide-toggle>
+
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item>Other</button>
+    </mat-menu>
+    <button mat-icon-button *ngIf="loginStatus" (click)="onLogout()">
+        <mat-icon>power_settings_new</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-toolbar color="primary" *ngIf="loginStatus">
+    <div class="schoolName">
+        <p class="school">{{schoolName}}</p>
+        <p class="person">Hello, {{userName}}</p>
+    </div>
+    <span class="example-spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>person</mat-icon>
+    </button>
+</mat-toolbar>
+
+<mat-sidenav-container class="example-container" [hasBackdrop]="false">
+    <mat-sidenav [disableClose]="true" [opened]="true" #drawer mode="side" *ngIf="loginStatus">
+        <app-main-nav-menu (closeMenuNow)="closeMenuNowNavMenu()"></app-main-nav-menu>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div class="routerOutlet">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>-->
+<div class="mainstyle">
+    <div class="flex ">
+        <nav class="side-nav">
+            <div class="brand-name"> Zyime </div>
+            <mat-divider [inset]="false"></mat-divider>
+            <app-main-nav-menu (closeMenuNow)="closeMenuNowNavMenu()"></app-main-nav-menu>
+        </nav>
+        <div class="content">
+            <div class="top-bar">
+                <mat-toolbar *ngIf="loginStatus">
+                    <div class="schoolName">
+                        <p class="brandName">{{schoolName}}</p>
+                        <!--<p class="person">Hello, {{userName}}</p>-->
+                    </div>
+                    <span class="example-spacer"></span>
+
+                    <div class="profile-sec">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>person</mat-icon>
+                        </button>
+                        <mat-slide-toggle labelPosition="before" [(ngModel)]="darkModeIsOn"
+                            (ngModelChange)="dackModeCheck($event)">
+                            <mat-icon>bedtime</mat-icon>
+                        </mat-slide-toggle>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item>Profile</button>
+                            <button mat-menu-item>Other</button>
+                        </mat-menu>
+                        <button mat-icon-button *ngIf="loginStatus" (click)="onLogout()">
+                            <mat-icon>power_settings_new</mat-icon>
+                        </button>
+                    </div>
+                </mat-toolbar>
+            </div>
+            <mat-divider class="matDividerMenu">
+            </mat-divider>
+
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

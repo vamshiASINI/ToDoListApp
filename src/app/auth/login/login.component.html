@@ -1,0 +1,69 @@
+<div class="login-container" layout-align="center center">
+    <form class="login-form-container" autocomplete="off" [formGroup]="LoginForm" novalidate>
+
+        <mat-card class="login-card">
+            <!--<mat-card-header>
+          <mat-card-title>Log in</mat-card-title>
+        </mat-card-header>-->
+
+            <div class="flexcontainer-login">
+                <div class="flexcontainer-login-left">
+                    <div class="leftdiv">
+                        <div class="logo-img">
+                            <img src="/assets/img/logo/logo-1.png" alt="">
+                            <img src="/assets/img/logo/logo-2.png" alt="">
+                            <p>Sign in using your account</p>
+                        </div>
+                        <div class="group-input">
+                            <form [formGroup]="LoginForm">
+                                <span class="input1">
+                                    <i class='fas fa-user-alt' style='font-size:18px ;'></i>
+                                    <input type="text" formControlName="username" required name="" id="username"
+                                        placeholder="Username" autocorrect="off" autocapitalize="none">
+                                </span>
+                                <span class="input1">
+                                    <i class='fas fa-lock' style='font-size:18px'></i>
+                                    <input type="password" id="password" formControlName="password" required class=""
+                                        placeholder="Password" autocorrect="off" autocapitalize="none">
+                                </span>
+
+                            </form>
+                        </div>
+                        <div class="group-button">
+                            <button mat-button mat-raised-button [disabled]="loader"
+                                (click)="checkLogin(LoginForm.value)" type="submit" class="submit-button">SIGN
+                                IN</button>
+                            <mat-spinner class="" [diameter]="50" *ngIf="loader"
+                                style="margin:auto auto;margin-top:8pt;"></mat-spinner>
+                        </div>
+                        <div class="textBottom">
+                            <p>Can't sign-in? </p>
+                            <a href=" " style="padding-left: 5px; color: #e83e8c ;"> Forgot Password</a>
+                        </div>
+                        <hr style="margin:10pt auto">
+                        <div class="textBottom ">
+                            <p>Have a question? </p>
+                            <a href="" style="padding-left: 5px;
+                             color: #e83e8c;">Support</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flexcontainer-login-right">
+                    <div class="right">
+                        <div class="card-bg">
+                            <img src="{{env.assetsPath}}img/logo/login-bg.jpeg" alt="">
+                        </div>
+                        <div class="right-text">
+                            <h1>Don't Have an Account</h1>
+                            <a>Contact your Institute's Administrator</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </mat-card>
+
+    </form>
+</div>

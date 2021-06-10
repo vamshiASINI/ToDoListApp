@@ -1,0 +1,231 @@
+<ul class="nav-menu-side">
+
+    <li [ngClass]="{'showSubMenu':menuHome}">
+        <button [routerLink]="['/']" (click)="closeOther();menuHome=true" mat-button>
+            <mat-icon class="icon-gap">home</mat-icon> Home
+        </button>
+    </li>
+
+    <li [ngClass]="{'showSubMenu':menuRoles}">
+        <button mat-button (click)="closeOther();menuRoles=true">
+            <mat-icon class="icon-gap">people</mat-icon> Roles
+        </button>
+    </li>
+
+    <li [ngClass]="{'showSubMenu':menuPrivileged}">
+        <app-side-menu-icon [iconStatus]="menuPrivileged" [menuText]="'Privileged Users'" (menuClickStatus)="closeOther();menuPrivileged=$event"> </app-side-menu-icon>
+        <ul>
+            <li> <button mat-button>
+                    <mat-icon class="icon-gap">person</mat-icon> Active Users
+                </button></li>
+            <li> <button mat-button>
+                    <mat-icon class="icon-gap">person</mat-icon> Deleted Users
+                </button></li>
+        </ul>
+    </li>
+
+    <li [ngClass]="{'showSubMenu':menuBilling}">
+        <app-side-menu-icon [iconStatus]="menuBilling" [menuText]="'Billing'" (menuClickStatus)="closeOther();menuBilling=$event"></app-side-menu-icon>
+        <ul>
+            <li><button mat-button [routerLink]="['/bill/purchase-services']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">person</mat-icon> Purchase
+                    Services
+                </button></li>
+            <li><button mat-button [routerLink]="['/bill']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">person</mat-icon>Your products
+                </button></li>
+            <li><button mat-button [routerLink]="['/bill/licenses']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">person</mat-icon>Licenses
+                </button>
+            </li>
+            <li><button mat-button [routerLink]="['/bill/bills-payments']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">person</mat-icon>Bills &
+                    Payments
+                </button></li>
+            <li><button mat-button [routerLink]="['/bill/billing-accounts']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">person</mat-icon>Accounts
+                </button></li>
+            <li><button mat-button [routerLink]="['/bill/billing-notifications']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">person</mat-icon>Notifications
+                </button></li>
+        </ul>
+    </li>
+
+    <li [ngClass]="{'showSubMenu':meunSupport}">
+
+        <app-side-menu-icon [iconStatus]="meunSupport" [menuText]="'Support'" (menuClickStatus)="closeOther();meunSupport=$event"></app-side-menu-icon>
+        <ul>
+            <li> <button mat-button (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">health</mat-icon>New service request
+                </button></li>
+            <li> <button mat-button (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">health</mat-icon>View service requests
+                </button></li>
+        </ul>
+    </li>
+
+
+    <li [ngClass]="{'showSubMenu':menuSetting}">
+        <app-side-menu-icon [iconStatus]="menuSetting" [menuText]="'Settings'" (menuClickStatus)="closeOther();menuSetting=$event"></app-side-menu-icon>
+        <ul>
+            <li> <button mat-button>
+                    <mat-icon class="icon-gap">health</mat-icon> Tenant Details
+                </button></li>
+            <li> <button mat-button>
+                    <mat-icon class="icon-gap">health</mat-icon> Domains
+                </button></li>
+            <li> <button mat-button>
+                    <mat-icon class="icon-gap">health</mat-icon> Partner relationships
+                </button></li>
+            <li> <button mat-button [routerLink]="['/settings/general-settings']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">health</mat-icon> General
+                    Settings
+                </button></li>
+            <li> <button mat-button [routerLink]="['/settings/custom-labels']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">health</mat-icon> Custom
+                    Labels
+                </button></li>
+
+            <li> <button mat-button [routerLink]="['/settings/add-on-apps']" (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">health</mat-icon> Add-on Apps
+                    <!--<br> (links to 3rd party apps)-->
+                </button></li>
+
+        </ul>
+    </li>
+
+    <li [ngClass]="{'showSubMenu':menuHealth}">
+        <app-side-menu-icon [iconStatus]="menuHealth" [menuText]="'Health'" (menuClickStatus)="closeOther();menuHealth=$event"></app-side-menu-icon>
+        <ul>
+
+            <li> <button mat-button (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">health</mat-icon> Service health
+                </button> </li>
+            <li> <button mat-button (click)="onClickSelf($event)">
+                    <mat-icon class="icon-gap">health</mat-icon> Message centre
+                </button> </li>
+        </ul>
+    </li>
+
+
+    <li [ngClass]="{'showSubMenu':menuEmployee}">
+        <app-side-menu-icon [iconStatus]="menuEmployee" [menuText]="'Employee'" (menuClickStatus)="closeOther();menuEmployee=$event"></app-side-menu-icon>
+        <ul>
+            <li> <button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/employee']">Employees
+                    Management</button> </li>
+            <li> <button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/employee-category']">Category</button></li>
+            <li> <button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/employee-department']">Departments</button></li>
+            <li> <button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/employee-designations']">Designations</button></li>
+            <li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/faculty-type-grade']">Faculty
+                    Grade</button></li>
+            <!--<li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/faculty-type']">Faculty
+                    Type</button></li>
+            <li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/faculty-type-grade']">Faculty
+                    Type Grade</button></li>-->
+
+            <li><button (click)="employeesLeaveManagement=!employeesLeaveManagement" mat-button>Leave
+                    Management</button>
+                <ul *ngIf="employeesLeaveManagement">
+                    <li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/leave-type']">Leave
+                            types</button></li>
+                    <!-- <li> <button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/leave-group']">Leave
+                            groups</button></li> -->
+                </ul>
+            </li>
+
+            <!--<li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/leave-type']">Leave
+                    types</button></li>
+            <li> <button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/leave-type-payment']">Leave
+                    type payments</button></li>
+            <li> <button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/leave-group']">Leave
+                    groups</button></li>
+            <li> <button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/leave-group-info']">Leave
+                    group infos</button></li>-->
+
+            <li>
+                <button (click)="employeesSettings=!employeesSettings" mat-button>
+                    Settings</button>
+                <ul *ngIf="employeesSettings">
+                    <li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/hr-settings-custom-field']">Additional Details </button>
+                    </li>
+                    <li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/employee/hr-settings-documents-type']">Documents </button>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+        </ul>
+    </li>
+
+    <li [ngClass]="{'showSubMenu':menuAccademic}">
+        <app-side-menu-icon [iconStatus]="menuAccademic" [menuText]="'Academic'" (menuClickStatus)="closeOther();menuAccademic=$event"></app-side-menu-icon>
+        <ul>
+
+            <li> <button mat-button [routerLink]="['academic']" (click)="onClickSelf($event)">{{session}}</button></li>
+            <li> <button mat-button [routerLink]="['academic/program']" (click)="onClickSelf($event)">{{program}}</button></li>
+            <li> <button mat-button [routerLink]="['academic/course-grade-class']" (click)="onClickSelf($event)">{{course}}</button></li>
+            <li> <button mat-button [routerLink]="['academic/batch-section']" (click)="onClickSelf($event)">{{batch}}</button></li>
+            <li> <button mat-button [routerLink]="['academic/subject']" (click)="onClickSelf($event)">{{subject}}</button></li>
+            <li> <button mat-button [routerLink]="['academic/module-chapter']" (click)="onClickSelf($event)">{{module}}</button></li>
+            <!-- <li> <button mat-button [routerLink]="['academic/topic-skill']"
+                    (click)="onClickSelf($event)">{{topic}}</button></li> -->
+
+        </ul>
+    </li>
+
+
+    <li [ngClass]="{'showSubMenu': menuStudent}">
+        <app-side-menu-icon [iconStatus]="menuStudent" [menuText]="'Student'" (menuClickStatus)="closeOther();menuStudent=$event"></app-side-menu-icon>
+        <ul>
+            <li> <button mat-button [routerLink]="['student/student']" (click)="onClickSelf($event)">Student
+                    Management</button>
+            </li>
+            <li> <button mat-button [routerLink]="['student/student-category']" (click)="onClickSelf($event)">Category</button>
+            </li>
+            <li>
+                <button (click)="studentsSettings=!studentsSettings" mat-button>
+                    Settings</button>
+                <ul *ngIf="studentsSettings">
+                    <li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/student/settings-custom-field']">Additional Details </button>
+                    </li>
+                    <li><button mat-button (click)="onClickSelf($event)" [routerLink]="['/student/settings-documents-type']">Documents </button>
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+    </li>
+
+    <li [ngClass]="{'showSubMenu': menuTimetable}">
+        <app-side-menu-icon [iconStatus]="menuTimetable" [menuText]="'Timetable'" (menuClickStatus)="closeOther();menuTimetable=$event"></app-side-menu-icon>
+        <ul>
+            <li> <button mat-button [routerLink]="['timetable']" (click)="onClickSelf($event)">Period Group</button>
+            </li>
+            <li> <button mat-button [routerLink]="['timetable/timetable']" (click)="onClickSelf($event)">Timetable</button></li>
+        </ul>
+    </li>
+    <li [ngClass]="{'showSubMenu': menuDiscussion}">
+        <app-side-menu-icon [iconStatus]="menuDiscussion" [menuText]="'Discussion'" (menuClickStatus)="closeOther();menuDiscussion=$event"></app-side-menu-icon>
+        <ul>
+            <li> <button mat-button [routerLink]="['discussion']" (click)="onClickSelf($event)">+ Discussion
+                    Group</button>
+            </li>
+            <li> <button mat-button [routerLink]="['discussion/discussion-group']" (click)="onClickSelf($event)">Discussion
+                    Groups</button>
+            </li>
+        </ul>
+    </li>
+    <li [ngClass]="{'showSubMenu':menuContact}">
+        <button [routerLink]="['/contact']" (click)="closeOther();menuContact=true" mat-button>
+          <mat-icon class="icon-gap">account_box</mat-icon> Contact
+      </button>
+    </li>
+
+
+
+
+
+
+</ul>

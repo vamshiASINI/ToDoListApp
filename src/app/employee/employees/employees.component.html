@@ -1,0 +1,623 @@
+<div class="title-bar">
+    <div class="title">
+        <h2>Employees Details</h2>
+    </div>
+    <div class="add" *ngIf="!isAddMode && !isEditMode">
+        <button mat-fab color="primary" matTooltip="Add New" (click)="add()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>
+
+<base-table *ngIf="!isAddMode && !isEditMode" [(tableSettings)]="employee" [actionColumnAllowed]="true"
+    [headingHide]="true">
+</base-table>
+
+<div class="container" *ngIf="isAddMode || isEditMode">
+    <form #mainForm="ngForm">
+        <mat-accordion class="example-headers-align">
+            <form #basicForm="ngForm">
+                <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                    <mat-expansion-panel-header color="primary">
+                        <mat-panel-title>
+                            Basic Information
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Email Address</mat-label>
+                                <input type="email" matInput [(ngModel)]="basicDetailsData.email" name="email"
+                                    placeholder="Placeholder" autocomplete="new-password" autocomplete="off" required>
+                            </mat-form-field>
+                        </div>
+                        <!-- <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Username</mat-label>
+                                <input type="text" matInput [(ngModel)]="basicDetailsData.username" name="username"
+                                    placeholder="Placeholder" autocomplete="new-password" autocomplete="off" required>
+                            </mat-form-field>
+                        </div> -->
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>First Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password"
+                                    autocomplete="off" [(ngModel)]="basicDetailsData.first_name" name="first_name"
+                                    required>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Middle Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password"
+                                    autocomplete="off" [(ngModel)]="basicDetailsData.middle_name" name="middle_name">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Last Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password"
+                                    autocomplete="off" [(ngModel)]="basicDetailsData.last_name" name="last_name">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Gender</mat-label>
+                                <mat-select [(ngModel)]="basicDetailsData.gender_id" name="gender_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let gender of globalAPIResponse.gender" [value]="gender.id">
+                                        {{gender.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Date of Birth</mat-label>
+                                <input matInput [matDatepicker]="picker" [(ngModel)]="basicDetailsData.date_of_birth"
+                                    name="date_of_birth" (click)="picker.open()" autocomplete="new-password"
+                                    autocomplete="off">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Phone Dialing Code</mat-label>
+                                <mat-select [(ngModel)]="basicDetailsData.phone_dialing_code_id"
+                                    name="phone_dialing_code_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let dialingCode of globalAPIResponse.country"
+                                        [value]="dialingCode.id">{{dialingCode.dialing_code}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Phone</mat-label>
+                                <input type="number" matInput placeholder="Placeholder" type="number"
+                                    autocomplete="new-password" autocomplete="off" [(ngModel)]="basicDetailsData.phone"
+                                    name="phone">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Religion</mat-label>
+                                <mat-select [(ngModel)]="basicDetailsData.religion_id" name="religion_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let religion of globalAPIResponse.religion"
+                                        [value]="religion.id">{{religion.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Qualification</mat-label>
+                                <mat-select [(ngModel)]="basicDetailsData.qualification_id" name="qualification_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let qualification of globalAPIResponse.qualification"
+                                        [value]="qualification.id">{{qualification.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Total Experience</mat-label>
+                                <input type="number" matInput placeholder="Placeholder" type="number"
+                                    autocomplete="new-password" autocomplete="off"
+                                    [(ngModel)]="basicDetailsData.total_experience" name="total_experience">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Experience Info</mat-label>
+                                <textarea matInput placeholder="Experience Info"
+                                    [(ngModel)]="basicDetailsData.experience_info" name="basicDetailsData"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Country</mat-label>
+                                <mat-select [(ngModel)]="basicDetailsData.country_id" name="country_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let country of globalAPIResponse.country" [value]="country.id">
+                                        {{country.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <section class="example-section">
+                                <mat-checkbox class="example-margin" [(ngModel)]="basicDetailsData.is_new_onbording"
+                                    name="is_new_onbording">Is New Onboarding
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <section class="example-section">
+                                <mat-checkbox class="example-margin" [(ngModel)]="basicDetailsData.is_billing_done"
+                                    name="is_billing_done">Is Billing Done
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <section class="example-section">
+                                <mat-checkbox class="example-margin" [(ngModel)]="basicDetailsData.is_active"
+                                    name="is_active">Is Active
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <section class="example-section">
+                                <mat-checkbox class="example-margin" [(ngModel)]="basicDetailsData.is_admin"
+                                    name="is_admin">Is Admin
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <section class="example-section">
+                                <mat-checkbox class="example-margin" [(ngModel)]="basicDetailsData.is_app_user"
+                                    name="is_app_user">Is App User
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <section class="example-section">
+                                <mat-checkbox class="example-margin" [(ngModel)]="basicDetailsData.is_invited"
+                                    name="is_invited">Is Invited
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <section class="example-section">
+                                <mat-checkbox class="example-margin" [(ngModel)]="basicDetailsData.is_accept_terms"
+                                    name="is_accept_terms">Is Accept Terms
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <section class="example-section">
+                                <mat-checkbox class="example-margin" [(ngModel)]="basicDetailsData.change_password"
+                                    name="change_password">Change Password
+                                </mat-checkbox>
+                            </section>
+                        </div>
+                    </div>
+
+                    <mat-action-row>
+                        <button mat-button color="primary" (click)="nextStep()">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+                <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Personal Information
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Father Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password"
+                                    autocomplete="off" [(ngModel)]="basicDetailsData.father_name" name="father_name">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Mother Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password"
+                                    autocomplete="off" [(ngModel)]="basicDetailsData.mother_name" name="mother_name">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Spouse Name</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password"
+                                    autocomplete="off" [(ngModel)]="basicDetailsData.spouse_name" name="spouse_name">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Marital Status</mat-label>
+                                <mat-select [(ngModel)]="basicDetailsData.marital_status_id" name="marital_status_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let marital of globalAPIResponse.maritalStatus"
+                                        [value]="marital.id">{{marital.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Emergency Phone Dialing Code</mat-label>
+                                <mat-select [(ngModel)]="basicDetailsData.emergency_phone_dialing_code_id"
+                                    name="phone_dialing_code_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let dialingCode of globalAPIResponse.country"
+                                        [value]="dialingCode.id">{{dialingCode.dialing_code}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Emergency Phone</mat-label>
+                                <input type="number" matInput placeholder="Placeholder" type="number"
+                                    autocomplete="new-password" autocomplete="off"
+                                    [(ngModel)]="basicDetailsData.emergency_phone" name="phone">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Blood Group</mat-label>
+                                <mat-select [(ngModel)]="basicDetailsData.blood_group_id" name="blood_group_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let bloodGroup of globalAPIResponse.bloodGroup"
+                                        [value]="bloodGroup.id">{{bloodGroup.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(33.33% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Nationality</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" autocomplete="new-password"
+                                    autocomplete="off" [(ngModel)]="basicDetailsData.nationality" name="nationality">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-action-row>
+                        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                        <button mat-button color="primary" (click)="nextStep()">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+            </form>
+
+            <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        General Details
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <form #extraInfoForm="ngForm">
+                    <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Category</mat-label>
+                                <mat-select [(ngModel)]="extraInfoData.category_id" name="category_id"
+                                    (selectionChange)="getCategory('designation')">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let category of extraInfoResponse.category"
+                                        [value]="category.id">
+                                        {{category.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Department</mat-label>
+                                <mat-select [(ngModel)]="extraInfoData.department_id"
+                                    (selectionChange)="extraInfoData.reporting_manager_id = null; extraInfoData.reporting_manager= null "
+                                    name="department_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let department of extraInfoResponse.department"
+                                        [value]="department.id">
+                                        {{department.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Designation</mat-label>
+                                <mat-select [(ngModel)]="extraInfoData.designation_id" name="designation_id">
+                                    <mat-option *ngIf="!extraInfoData.category_id" disabled value="">Select category
+                                        first
+                                    </mat-option>
+                                    <mat-option *ngIf="extraInfoData.category_id" value="">select</mat-option>
+                                    <mat-option *ngFor="let designation of extraInfoResponse.designation"
+                                        [value]="designation.id">
+                                        {{designation.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Faculty Type Grade</mat-label>
+                                <mat-select [(ngModel)]="extraInfoData.faculty_type_grade_id"
+                                    name="faculty_type_grade_id">
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let facultyTypeGrade of extraInfoResponse.facultyTypeGrade"
+                                        [value]="facultyTypeGrade.id">
+                                        {{facultyTypeGrade.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Joining Date</mat-label>
+                                <input matInput [matDatepicker]="joining_date_picker"
+                                    [(ngModel)]="extraInfoData.joining_date" name="joining_date"
+                                    (click)="joining_date_picker.open()" autocomplete="new-password" autocomplete="off">
+                                <mat-datepicker-toggle matSuffix [for]="joining_date_picker"></mat-datepicker-toggle>
+                                <mat-datepicker #joining_date_picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field class="full-input margin-top">
+                                <mat-label>Reporting Manager</mat-label>
+                                <input type="text" matInput [(ngModel)]="extraInfoData.reporting_manager"
+                                    (keyup)="search($event, 'reporting manager')"
+                                    (focus)="onAutoCompleteChange('reporting manager')"
+                                    [matAutocomplete]="reporting_manager" name="reporting_manager">
+                                <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+                            </mat-form-field>
+                            <mat-autocomplete #reporting_manager="matAutocomplete"
+                                (optionSelected)="onAutoCompleteChange('reporting manager', $event)">
+                                <mat-option disabled *ngIf="!isLoading && !globalAPIResponse.autoComplete.length">
+                                    No Result Found</mat-option>
+                                <mat-option disabled *ngIf="!extraInfoData.department_id">
+                                    Please select department first</mat-option>
+                                <mat-option *ngFor="let option of globalAPIResponse.autoComplete" [value]="option.name"
+                                    [id]="option.id">
+                                    {{option.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-label>Is Teaching/Faculty Staff</mat-label>
+                            <mat-radio-group [(ngModel)]="extraInfoData.is_teaching_or_faculty_staff"
+                                name="is_teaching_or_faculty_staff">
+                                <mat-radio-button style="padding: 10px;" [value]="true">Yes</mat-radio-button>
+                                <mat-radio-button [value]="false">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-label>Is Active</mat-label>
+                            <mat-radio-group [(ngModel)]="extraInfoData.is_active" name="is_active">
+                                <mat-radio-button style="padding: 10px;" [value]="true">Yes</mat-radio-button>
+                                <mat-radio-button [value]="false">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </form>
+                <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Address
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <!-- <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+                    <div fxFlex="0 1 calc(33.33% - 25px)" *ngFor="let addresss of addressArray; let i=index">
+                        <mat-card>
+                            <mat-card-content>
+                                <p><b>Address Line1 :</b> {{addresss.address1}}</p>
+                                <p><b>Address Line2 :</b> {{addresss.address2}}</p>
+                                <p><b>City :</b> {{addresss.city}}</p>
+                                <p><b>Pincode :</b> {{addresss.pincode}}</p>
+                                <p><b>state :</b> {{addresss.state}}</p>
+                                <p><b>is Active :</b> {{addresss.is_active}}</p>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <mat-icon (click)="editAddress(addresss, i)" style="cursor: pointer;">edit</mat-icon>
+                                <mat-icon (click)="deleteAddress(i)" style="cursor: pointer;">delete</mat-icon>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div> -->
+                <form #address="ngForm">
+                    <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Address Line 1</mat-label>
+                                <input type="textarea" matInput placeholder="Placeholder" type="text"
+                                    autocomplete="new-password" autocomplete="off"
+                                    [(ngModel)]="addressFieldData.address1" name="address1" required>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Address Line 2</mat-label>
+                                <input type="textarea" matInput placeholder="Placeholder" type="text"
+                                    autocomplete="new-password" autocomplete="off"
+                                    [(ngModel)]="addressFieldData.address2" name="address2">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field class="full-input margin-top">
+                                <mat-label>Country</mat-label>
+                                <input type="text" matInput [(ngModel)]="addressFieldData.country"
+                                    (keyup)="search($event, 'country')" (focus)="onAutoCompleteChange('country')"
+                                    [matAutocomplete]="country" name="country">
+                                <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+                            </mat-form-field>
+                            <mat-autocomplete #country="matAutocomplete"
+                                (optionSelected)="onAutoCompleteChange('country', $event)">
+                                <mat-option disabled *ngIf="!isLoading && !globalAPIResponse.autoComplete.length">
+                                    No Result Found</mat-option>
+                                <mat-option *ngFor="let option of globalAPIResponse.autoComplete" [value]="option.name"
+                                    [id]="option.id">
+                                    {{option.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>City</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" type="text"
+                                    autocomplete="new-password" autocomplete="off" [(ngModel)]="addressFieldData.city"
+                                    name="city" required>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <!-- <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>State</mat-label>
+                                <mat-select [(ngModel)]="addressFieldData.state_id" name="state_id" required>
+                                    <mat-option value="">select</mat-option>
+                                    <mat-option *ngFor="let state of globalAPIResponse.state" [value]="state.id">
+                                        {{state.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+                            <mat-form-field class="full-input margin-top">
+                                <mat-label>State</mat-label>
+                                <input type="text" matInput [(ngModel)]="addressFieldData.state"
+                                    (input)="search($event, 'state')" (focus)="onAutoCompleteChange('state')"
+                                    [matAutocomplete]="auto" name="state" required>
+                                <!-- <mat-spinner diameter='17' mode='indeterminate' *ngIf="isAutoCompleteLoading[field.name]"
+                                        matSuffix>
+                                    </mat-spinner> -->
+                                <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+                            </mat-form-field>
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="onAutoCompleteChange('state', $event)">
+                                <mat-option disabled *ngIf="!isLoading && !globalAPIResponse.autoComplete.length">
+                                    No Result Found</mat-option>
+                                <mat-option disabled *ngIf="!addressFieldData.country_id">Please select country first
+                                </mat-option>
+                                <mat-option *ngFor="let option of globalAPIResponse.autoComplete" [value]="option.name"
+                                    [id]="option.id">
+                                    {{option.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-form-field appearance="standard" class="full-input">
+                                <mat-label>Pin Code</mat-label>
+                                <input type="text" matInput placeholder="Placeholder" type="text"
+                                    autocomplete="new-password" autocomplete="off"
+                                    [(ngModel)]="addressFieldData.pincode" name="pincode" required>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="0 1 calc(50% - 25px)">
+                            <mat-label>Is Active</mat-label>
+                            <mat-radio-group [(ngModel)]="addressFieldData.is_active" name="is_active">
+                                <mat-radio-button style="padding: 10px;" [value]="true">Yes</mat-radio-button>
+                                <mat-radio-button [value]="false">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <!-- <button style="float: right; margin-right: 20px;
+                    margin-top: 10px;" mat-raised-button color="primary" [disabled]="!address.valid"
+                        (click)="addAddress('add', address)" *ngIf="isAddMode && !isAddressEditMode">Add</button>
+                    <button style="float: right; margin-right: 20px;
+                    margin-top: 10px;" mat-raised-button color="primary" [disabled]="!address.valid"
+                        (click)="addAddress('edit', address)" *ngIf="isAddressEditMode">update</button> -->
+                </form>
+                <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Additional Details
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <form #customForm="ngForm">
+                    <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+                        <div [fxFlex]="customFieldsFlex" *ngFor="let field of customsFields">
+                            <ng-container [ngSwitch]="field.input_type">
+                                <ng-container *ngSwitchCase="'SELECT'">
+                                    <mat-form-field class="full-input margin-top">
+                                        <mat-label>{{field.name | camelize}}</mat-label>
+                                        <mat-select [(ngModel)]="customformData[field.name]" [name]="field.name"
+                                            [required]="field.is_mandatory">
+                                            <mat-option value="">Select</mat-option>
+                                            <mat-option *ngFor="let data of field.dataSource" [value]="data.value">
+                                                {{data.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="'CHECKBOX'" class="full-input margin-top">
+                                    <label style="margin-right: 20px;">{{field.name | camelize}}</label>
+                                    <mat-radio-group [(ngModel)]="customformData[field.name]" [name]="field.name"
+                                        [required]="field.is_mandatory">
+                                        <mat-radio-button style="padding: 10px;" [value]="true">Yes</mat-radio-button>
+                                        <mat-radio-button [value]="false">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </ng-container>
+                                <ng-container *ngSwitchDefault>
+                                    <mat-form-field appearance="standard" class="full-input">
+                                        <mat-label>{{field.name | camelize}}</mat-label>
+                                        <input [type]="field.input_type" matInput [placeholder]="field.name | camelize"
+                                            autocomplete="new-password" autocomplete="off"
+                                            [(ngModel)]="customformData[field.name]" [name]="field.name"
+                                            [required]="field.is_mandatory">
+                                    </mat-form-field>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </div>
+                </form>
+                <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">Next</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 5" (opened)="setStep(5)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Documents
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <form #customForm="ngForm">
+                    <div fxLayout="row wrap" fxLayoutGap="25px" fxLayoutAlign="flex-start" style="padding: 20px 0px;">
+                        <div [fxFlex]="docFieldsFlex" *ngFor="let docField of docFields">
+                            <lable style="margin-right: 15px;">{{docField.file_name}}:</lable>
+                            <button mat-mini-fab color="primary" (click)="fileInput.click()">
+                                <mat-icon>attach_file</mat-icon>
+                            </button>
+                            <input hidden (change)="onFileSelected()" #fileInput type="file" [id]="docField.id"
+                                accept=".{{docField.type_file | lowercase}}">
+                        </div>
+                    </div>
+                </form>
+                <mat-action-row>
+                    <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                    <button mat-button color="primary" (click)="nextStep()">End</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <div class="bottom-panel" [ngStyle]="{'background-color': bottomPanelBGCColor}">
+            <button style="float: right; margin-right: 20px;
+            margin-top: 10px;" mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+            <button style="float: right; margin-right: 20px;
+            margin-top: 10px;" mat-raised-button color="primary" *ngIf="!isEditMode"
+                [disabled]="!basicForm.valid || !customForm.valid || !address.valid" (click)="submit()">Submit</button>
+            <button style="float: right; margin-right: 20px;
+            margin-top: 10px;" mat-raised-button color="primary" *ngIf="!isAddMode"
+                [disabled]="!basicForm.valid || !customForm.valid || !address.valid || mainForm.dirty"
+                (click)="update()">Update</button>
+        </div>
+    </form>
+</div>

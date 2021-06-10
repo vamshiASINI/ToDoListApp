@@ -1,0 +1,165 @@
+<div style="padding: 8pt;">
+
+    <form autocomplete="off" novalidate [formGroup]="instForm">
+        <h2>Institution</h2>
+        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8pt">
+
+            <div></div>
+            <mat-form-field>
+                <mat-label> Name</mat-label>
+                <input matInput placeholder="Name" type="text" formControlName="name">
+            </mat-form-field>
+
+
+            <div>
+                <h3>Address</h3>
+                <mat-card *ngFor="let item of instObjAddress; let i=index">
+                    <mat-card-header>
+                        <mat-card-title>{{item.name}}</mat-card-title>
+                        <mat-card-subtitle>subtitle</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                    </mat-card-content>
+
+                </mat-card>
+            </div>
+
+
+
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8pt">
+                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8pt">
+                    <div>
+
+                        <mat-form-field>
+                            <mat-label>code</mat-label>
+                            <mat-select formControlName="phone_dialing_code_id">
+                                <mat-option [value]="item.id" *ngFor="let item of countryList; let i=index"> {{item.dialing_code}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+
+                            <mat-label> Phone</mat-label>
+                            <input matInput placeholder="Phone" formControlName="phone">
+                        </mat-form-field>
+                    </div>
+
+
+                    <mat-form-field>
+                        <mat-label> Email</mat-label>
+                        <input matInput placeholder="Email" formControlName="email">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label> Website</mat-label>
+                        <input matInput placeholder="Website" formControlName="www_url">
+                    </mat-form-field>
+
+
+                    <mat-form-field>
+                        <mat-label>Institution type</mat-label>
+                        <mat-select formControlName="institution_type_global_id">
+                            <mat-option *ngFor="let inst of instituteTypeGlobal" [value]="inst.id">
+                                {{inst.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+                    <!--<mat-form-field >
+                        <mat-label> Student Attendance Type</mat-label>
+                        <input matInput placeholder="Student Attendance Type">
+                    </mat-form-field>-->
+
+
+                    <mat-form-field>
+                        <mat-label>Start day of the week</mat-label>
+                        <mat-select formControlName="start_day_of_the_week">
+                            <mat-option [value]="item.id" *ngFor="let item of daysOfWeek; let i=index">{{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+
+                    <mat-form-field>
+                        <mat-label>Date Format</mat-label>
+                        <mat-select formControlName="date_format_id">
+                            <mat-option [value]="itemDate.id" *ngFor="let itemDate of globalDateFormate; let i=index">{{itemDate.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+
+
+                    <mat-form-field>
+                        <mat-label>Language</mat-label>
+                        <mat-select formControlName="language_id">
+                            <mat-option [value]="itemLan.id" *ngFor="let itemLan of languageCode; let i=index">{{itemLan.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="8pt">
+                    <mat-form-field>
+                        <mat-label>Time zone</mat-label>
+                        <mat-select formControlName="time_zone_id">
+                            <mat-option [value]="itemLan.id" *ngFor="let itemLan of timeZone; let i=index">{{itemLan.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+                    <mat-form-field>
+                        <mat-label>Country</mat-label>
+                        <mat-select formControlName="country_id">
+                            <mat-option [value]="itemLan.id" *ngFor="let itemLan of countryList; let i=index">{{itemLan.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+                    <mat-form-field>
+                        <mat-label>Currency</mat-label>
+                        <mat-select formControlName="currency_id">
+                            <mat-option [value]="itemLan.id" *ngFor="let itemLan of currency; let i=index">{{itemLan.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+
+
+
+                    <mat-checkbox formControlName="student_admission_auto">Enable auto increment of Student Admission No.</mat-checkbox>
+
+                    <mat-checkbox formControlName="enable_auto_employee">Enable auto increment of Employee No.</mat-checkbox>
+
+                    <mat-form-field>
+                        <mat-label> Prefix Counter Employee</mat-label>
+                        <input matInput placeholder="Prefix Counter" formControlName="prefix_counter_employee">
+                    </mat-form-field>
+
+
+
+                    <mat-form-field>
+                        <mat-label> Prefix Counter Student</mat-label>
+                        <input matInput placeholder="Prefix Counter" formControlName="prefix_counter_student">
+                    </mat-form-field>
+
+                    <mat-checkbox formControlName="enable_auto_student">Enable auto increment of Student No.</mat-checkbox>
+
+
+                    <mat-checkbox formControlName="enable_roll_number_for_student">Enable roll number for students</mat-checkbox>
+
+                    <mat-checkbox formControlName="enable_sibling">Enable sibling</mat-checkbox>
+                </div>
+            </div>
+
+
+
+            <button *ngIf="!updatingServer" mat-raised-button color="primary" (click)="updateFrom()">Update</button>
+            <button *ngIf="updatingServer" mat-raised-button color="primary">Updateing.......Wait</button>
+
+        </div>
+
+    </form>
+
+</div>

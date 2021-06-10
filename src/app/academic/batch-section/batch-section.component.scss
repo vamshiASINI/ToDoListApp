@@ -1,0 +1,35 @@
+.title-bar{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+.full-input{
+  width: 100%;
+}
+.example-stretched-tabs {
+  max-width: 100%;
+}
+.add{
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
+.form-container{
+  margin: 10px;
+}
+.full-input{
+  width: 100%;
+}
+.button-panel{
+  padding: 15px 0;
+}
+.button{
+  margin-right: 10px;
+}
+.margin-top{
+  margin-top: 10px;
+}
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}
